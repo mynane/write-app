@@ -1,0 +1,46 @@
+[package]
+name = "write-app"
+version = "0.0.0"
+description = "A Tauri App"
+authors = ["you"]
+license = ""
+repository = ""
+edition = "2021"
+rust-version = "1.57"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[build-dependencies]
+tauri-build = { version = "1.0.0", features = [] }
+
+[dependencies]
+serde_json = "1.0"
+serde = { version = "1.0", features = ["derive"] }
+tauri = { version = "1.0.0", features = ["api-all"] }
+reqwest = { version = "0.11", features = ["blocking", "json"] }
+tokio = { version = "1", features = ["full"] }
+anyhow = "1.0"
+dirs = "4.0.0"
+open = "3.0.2"
+dunce = "1.0.2"
+nanoid = "0.4.0"
+chrono = "0.4.19"
+serde_yaml = "0.9.11"
+
+log = "0.4.14"
+log4rs = "1.0.0"
+warp = "0.3"
+which = "4.2.2"
+auto-launch = "0.3.0"
+port_scanner = "0.1.5"
+futures-util = "0.3.14"
+indicatif = "0.17.0"
+tempdir = "0.3.7"
+
+[features]
+# by default Tauri runs in production mode
+# when `tauri dev` runs it is executed with `cargo run --no-default-features` if `devPath` is an URL
+default = [ "custom-protocol" ]
+# this feature is used used for production builds where `devPath` points to the filesystem
+# DO NOT remove this
+custom-protocol = [ "tauri/custom-protocol" ]
