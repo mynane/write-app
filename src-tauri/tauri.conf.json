@@ -8,7 +8,7 @@
   },
   "package": {
     "productName": "write-app",
-    "version": "0.0.0"
+    "version": "0.0.7"
   },
   "tauri": {
     "allowlist": {
@@ -50,10 +50,11 @@
     "security": {
       "csp": null
     },
-
     "updater": {
       "active": true,
-      "endpoints": ["https://github.com/mynane/write-app/releases/download/updater/update.json"],
+      "endpoints": [
+        "https://github.com/mynane/write-app/releases/download/updater/update.json"
+      ],
       "dialog": false,
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEZGMDUyRDY1NzJCRkYxNwpSV1FYL3l0WDFsTHdEeGNYNWJoV0RRdjBpZWlmT1dyaGRhSy9TQ3c0SFA0aVFaOWJLdEFQK2VDbAo="
     },
