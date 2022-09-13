@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from "vue";
+import { h, onMounted, onUnmounted, ref } from "vue";
 import { listen } from "@tauri-apps/api/event";
 import { marked } from "marked";
 import { invoke } from "@tauri-apps/api/tauri";
@@ -12,6 +12,7 @@ import {
   UpdateStatus,
 } from "@tauri-apps/api/updater";
 import { relaunch } from "@tauri-apps/api/process";
+import { ElNotification } from "element-plus";
 
 const dialogVisible = ref<any>(false);
 const updateInfo = ref<any>(null);
@@ -26,11 +27,12 @@ async function greet() {
   if (update.shouldUpdate) {
     updateInfo.value = update;
     dialogVisible.value = true;
+  } else {
+    ElNotification({
+      title: "版本检测",
+      message: h("i", { style: "color: teal" }, "已经是最新版本"),
+    });
   }
-  // greetMsg.value = await invoke("greet", { name: name.value });
-  // tasks.value = await invoke("get_all_tasks", {});
-
-  // console.log(tasks);
 }
 
 onMounted(async () => {

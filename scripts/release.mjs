@@ -42,6 +42,7 @@ async function resolveRelease() {
       linux: { signature: '', url: '' },
       darwin: { signature: '', url: '' },
       'darwin-aarch64': { signature: '', url: '' },
+      'darwin-x86_64': { signature: '', url: '' },
     },
   }
 
@@ -61,11 +62,13 @@ async function resolveRelease() {
     if (/\.app\.tar\.gz$/.test(name)) {
       updateData.platforms.darwin.url = browser_download_url
       updateData.platforms['darwin-aarch64'].url = browser_download_url
+      updateData.platforms['darwin-x86_64'].url = browser_download_url
     }
     // darwin signature
     if (/\.app\.tar\.gz\.sig$/.test(name)) {
       updateData.platforms.darwin.signature = await getSignature(browser_download_url)
       updateData.platforms['darwin-aarch64'].signature = await getSignature(browser_download_url)
+      updateData.platforms['darwin-x86_64'].signature = await getSignature(browser_download_url)
     }
 
     // linux url
@@ -87,6 +90,7 @@ async function resolveRelease() {
     console.log(`[Error]: failed to parse release for darwin`)
     delete updateData.platforms.darwin
     delete updateData.platforms['darwin-aarch64']
+    delete updateData.platforms['darwin-x86_64']
   }
   if (!win64.url) {
     console.log(`[Error]: failed to parse release for win64`)
