@@ -67,6 +67,7 @@ async function update() {
 </script>
 
 <template>
+  <div>升级后查看</div>
   <el-row class="mb-4">
     <el-button @click="greet">检查更新</el-button>
   </el-row>
