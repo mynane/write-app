@@ -39,6 +39,7 @@ async function resolveRelease() {
     pub_date: new Date().toISOString(),
     platforms: {
       win64: { signature: '', url: '' },
+      'windows-x86_64': { signature: '', url: '' },
       linux: { signature: '', url: '' },
       darwin: { signature: '', url: '' },
       'darwin-aarch64': { signature: '', url: '' },
@@ -52,10 +53,12 @@ async function resolveRelease() {
     // win64 url
     if (/\.msi\.zip$/.test(name)) {
       updateData.platforms.win64.url = browser_download_url
+      updateData.platforms['windows-x86_64'].url = browser_download_url
     }
     // win64 signature
     if (/\.msi\.zip\.sig$/.test(name)) {
       updateData.platforms.win64.signature = await getSignature(browser_download_url)
+      updateData.platforms['windows-x86_64'].signature = await getSignature(browser_download_url)
     }
 
     // darwin url
@@ -95,6 +98,7 @@ async function resolveRelease() {
   if (!win64.url) {
     console.log(`[Error]: failed to parse release for win64`)
     delete updateData.platforms.win64
+    delete updateData.platforms['windows-x86_64']
   }
   if (!linux.url) {
     console.log(`[Error]: failed to parse release for linux`)

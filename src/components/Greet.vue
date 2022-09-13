@@ -13,12 +13,14 @@ import {
 } from "@tauri-apps/api/updater";
 import { relaunch } from "@tauri-apps/api/process";
 import { ElNotification } from "element-plus";
+import { getVersion } from "@tauri-apps/api/app";
 
 const dialogVisible = ref<any>(false);
 const updateInfo = ref<any>(null);
 const unlisten = ref<any>(null);
 const progress = ref<any>({ current: 0, total: 0 });
 const updateStatus = ref<UpdateStatus>("PENDING");
+const version = ref<string>("");
 
 async function greet() {
   const update = await checkUpdate();
@@ -36,6 +38,8 @@ async function greet() {
 }
 
 onMounted(async () => {
+  const appVersion = await getVersion();
+  version.value = appVersion;
   const vConsole = new VConsole();
   unlisten.value = await onUpdaterEvent(({ error, status }) => {
     console.log("Updater event", error, status);
@@ -74,7 +78,7 @@ async function update() {
 </script>
 
 <template>
-  <div>升级后查看</div>
+  <div>{{ version }}</div>
   <el-row class="mb-4">
     <el-button @click="greet">检查更新</el-button>
   </el-row>

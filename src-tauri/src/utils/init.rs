@@ -8,6 +8,7 @@ use log4rs::encode::pattern::PatternEncoder;
 use std::fs;
 use std::io::Write;
 use std::path::PathBuf;
+use tauri::api::process::{Command, CommandEvent};
 use tauri::PackageInfo;
 
 /// initialize this instance's log file
@@ -59,6 +60,25 @@ fn init_config(app_dir: &PathBuf) -> std::io::Result<()> {
 
 /// initialize app
 pub fn init_app(package_info: &PackageInfo) {
+    // #[cfg(target_os = "macos")]
+    // tauri::async_runtime::spawn(async move {
+    //     let (mut rx, mut child) = Command::new("node")
+    //         .args(["--master-disable"])
+    //         .spawn()
+    //         .expect("Failed to spawn cargo");
+
+    //     let mut i = 0;
+    //     while let Some(event) = rx.recv().await {
+    //         if let CommandEvent::Stdout(line) = event {
+    //             println!("got: {}", line);
+    //             i += 1;
+    //             if i == 4 {
+    //                 child.write("message from Rust\n".as_bytes()).unwrap();
+    //                 i = 0;
+    //             }
+    //         }
+    //     }
+    // });
     // create app dir
     let app_dir = dirs::app_home_dir();
     let log_dir = dirs::app_logs_dir();
