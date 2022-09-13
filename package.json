@@ -1,7 +1,7 @@
 {
   "name": "write-app",
   "private": true,
-  "version": "0.0.10",
+  "version": "0.0.8",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -31,6 +31,7 @@
     "module": "^1.2.5",
     "node-fetch": "^3.2.10",
     "typescript": "^4.6.4",
+    "vconsole": "^3.14.6",
     "vite": "^3.0.2",
     "vue-tsc": "^0.40.0",
     "zlib": "^1.0.5"

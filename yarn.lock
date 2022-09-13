@@ -24,6 +24,13 @@
   "resolved" "https://registry.npmmirror.com/@babel/parser/-/parser-7.19.0.tgz"
   "version" "7.19.0"
 
+"@babel/runtime@^7.17.2":
+  "integrity" "sha512-eR8Lo9hnDS7tqkO7NsV+mKvCmv5boaXFSZ70DnfhcgiEne8hv9oCEd36Klw74EtizEqLsy4YnW8UWwpBVolHZA=="
+  "resolved" "https://registry.npmmirror.com/@babel/runtime/-/runtime-7.19.0.tgz"
+  "version" "7.19.0"
+  dependencies:
+    "regenerator-runtime" "^0.13.4"
+
 "@ctrl/tinycolor@^3.4.1":
   "integrity" "sha512-ej5oVy6lykXsvieQtqZxCOaLT+xD4+QNarq78cIYISHmZXshCvROLudpQN3lfL8G0NL7plMSSK+zlyvCaIJ4Iw=="
   "resolved" "https://registry.npmmirror.com/@ctrl/tinycolor/-/tinycolor-3.4.1.tgz"
@@ -491,6 +498,16 @@
   "version" "1.8.0"
   dependencies:
     "safe-buffer" "~5.1.1"
+
+"copy-text-to-clipboard@^3.0.1":
+  "integrity" "sha512-rvVsHrpFcL4F2P8ihsoLdFHmd404+CMg71S756oRSeQgqk51U3kicGdnvfkrxva0xXH92SjGS62B0XIJsbh+9Q=="
+  "resolved" "https://registry.npmmirror.com/copy-text-to-clipboard/-/copy-text-to-clipboard-3.0.1.tgz"
+  "version" "3.0.1"
+
+"core-js@^3.11.0":
+  "integrity" "sha512-sr0FY4lnO1hkQ4gLDr24K0DGnweGO1QwSj5BpfQjpSJPdqWalja4cTps29Y/PJVG/P7FYlPDkH3hO+Tr0CvDgQ=="
+  "resolved" "https://registry.npmmirror.com/core-js/-/core-js-3.25.1.tgz"
+  "version" "3.25.1"
 
 "core-util-is@~1.0.0":
   "integrity" "sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ=="
@@ -1223,6 +1240,11 @@
   "resolved" "https://registry.npmmirror.com/ms/-/ms-2.0.0.tgz"
   "version" "2.0.0"
 
+"mutation-observer@^1.0.3":
+  "integrity" "sha512-M/O/4rF2h776hV7qGMZUH3utZLO/jK7p8rnNgGkjKUw8zCGjRQPxB8z6+5l8+VjRUQ3dNYu4vjqXYLr+U8ZVNA=="
+  "resolved" "https://registry.npmmirror.com/mutation-observer/-/mutation-observer-1.0.3.tgz"
+  "version" "1.0.3"
+
 "nanoid@^3.3.4":
   "integrity" "sha512-MqBkQh/OHTS2egovRtLk45wEyNXwF+cokD+1YPf9u5VfJiRdAiRwB2froX5Co9Rh20xs4siNPm8naNotSD6RBw=="
   "resolved" "https://registry.npmmirror.com/nanoid/-/nanoid-3.3.4.tgz"
@@ -1485,6 +1507,11 @@
     "safe-buffer" "~5.1.1"
     "string_decoder" "~1.1.1"
     "util-deprecate" "~1.0.1"
+
+"regenerator-runtime@^0.13.4":
+  "integrity" "sha512-p3VT+cOEgxFsRRA9X4lkI1E+k2/CtnKtU4gcxyaCUreilL/vqI6CdZ3wxVUx3UOUg+gnUOQQcRI7BmSI656MYA=="
+  "resolved" "https://registry.npmmirror.com/regenerator-runtime/-/regenerator-runtime-0.13.9.tgz"
+  "version" "0.13.9"
 
 "regex-cache@^0.4.2":
   "integrity" "sha512-nVIZwtCjkC9YgvWkpM55B5rBhBYRZhAaJbgcFYXXsHnbZ9UZI9nnVWYZpBlCqv9ho2eZryPnWrZGsOdPwVWXWQ=="
@@ -1782,6 +1809,16 @@
   dependencies:
     "spdx-correct" "^3.0.0"
     "spdx-expression-parse" "^3.0.0"
+
+"vconsole@^3.14.6":
+  "integrity" "sha512-8Ffk2SfNe6EzKqZ0aNnNjpAVBVT7zgJo81lYEJdKySYLVYBeSawdSkWi9fSjDg3WsQhgS1vNPmRqJDTuwdVbnQ=="
+  "resolved" "https://registry.npmmirror.com/vconsole/-/vconsole-3.14.6.tgz"
+  "version" "3.14.6"
+  dependencies:
+    "@babel/runtime" "^7.17.2"
+    "copy-text-to-clipboard" "^3.0.1"
+    "core-js" "^3.11.0"
+    "mutation-observer" "^1.0.3"
 
 "vinyl-fs@2.4.3":
   "integrity" "sha512-XxYoy5HpHrVd76tpnI5Vv/+b/xlEVusOmn4LjQ01s2JyiDMNaUm3Rb7Y3xTkRw+YoRBVoUrCs7EAIFNXyIlI8Q=="

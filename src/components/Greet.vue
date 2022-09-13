@@ -3,6 +3,8 @@ import { onMounted, onUnmounted, ref } from "vue";
 import { listen } from "@tauri-apps/api/event";
 import { marked } from "marked";
 import { invoke } from "@tauri-apps/api/tauri";
+import VConsole from "vconsole";
+
 import {
   checkUpdate,
   installUpdate,
@@ -19,6 +21,8 @@ const updateStatus = ref<UpdateStatus>("PENDING");
 
 async function greet() {
   const update = await checkUpdate();
+
+  console.log("🚀 ~ file: Greet.vue ~ line 22 ~ greet ~ update", update);
   if (update.shouldUpdate) {
     updateInfo.value = update;
     dialogVisible.value = true;
@@ -30,6 +34,7 @@ async function greet() {
 }
 
 onMounted(async () => {
+  const vConsole = new VConsole();
   unlisten.value = await onUpdaterEvent(({ error, status }) => {
     console.log("Updater event", error, status);
     updateStatus.value = status;
@@ -67,7 +72,6 @@ async function update() {
 </script>
 
 <template>
-  <div>升级后查看</div>
   <el-row class="mb-4">
     <el-button @click="greet">检查更新</el-button>
   </el-row>
