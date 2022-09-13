@@ -3,7 +3,7 @@ import { ref } from "vue";
 import { invoke } from "@tauri-apps/api/tauri";
 
 const greetMsg = ref("");
-const tasks = ref("");
+const tasks: any = ref("");
 const name = ref("");
 
 async function greet() {
@@ -24,6 +24,6 @@ async function greet() {
   <p>{{ greetMsg }}</p>
 
   <ul>
-    <li v-for="item of tasks.items">{{ item.name }}</li>
+    <li v-for="item of tasks.items" v-bind:key="item.uid">{{ item.name }}</li>
   </ul>
 </template>
