@@ -96,14 +96,14 @@ async function resolveRelease() {
   }
 
   // 生成一个代理github的更新文件
-  // 使用 https://hub.fastgit.xyz/ 做github资源的加速
+  // 使用 https://github.91chi.fun/ 做github资源的加速
   const updateDataNew = JSON.parse(JSON.stringify(updateData))
 
   Object.keys(updateDataNew.platforms).forEach((key) => {
     if (updateDataNew.platforms[key]) {
       updateDataNew.platforms[key].url = updateDataNew.platforms[key].url.replace(
         'https://github.com/',
-        'https://hub.fastgit.xyz/'
+        'https://github.91chi.fun//https://github.com/'
       )
     } else {
       console.log(`[Error]: updateDataNew.platforms.${key} is null`)
