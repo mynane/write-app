@@ -11,10 +11,10 @@ import {
 } from "@tauri-apps/api/updater";
 import { relaunch } from "@tauri-apps/api/process";
 
-const dialogVisible = ref(false);
-const updateInfo = ref(null);
-const unlisten = ref(null);
-const progress = ref({ current: 0, total: 0 });
+const dialogVisible = ref<any>(false);
+const updateInfo = ref<any>(null);
+const unlisten = ref<any>(null);
+const progress = ref<any>({ current: 0, total: 0 });
 const updateStatus = ref<UpdateStatus>("PENDING");
 
 async function greet() {
@@ -67,7 +67,6 @@ async function update() {
 </script>
 
 <template>
-  <div>升级后查看</div>
   <el-row class="mb-4">
     <el-button @click="greet">检查更新</el-button>
   </el-row>

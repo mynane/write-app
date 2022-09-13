@@ -22,6 +22,18 @@
 - clash config file case ignore
 - clash `external-controller` only port
 
+## v0.0.9
+
+### Features
+
+- i18n supports
+- Remote profile User Agent supports
+
+### Bug Fixes
+
+- clash config file case ignore
+- clash `external-controller` only port
+
 ## v0.0.10
 
 ### Features
