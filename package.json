@@ -1,7 +1,7 @@
 {
   "name": "write-app",
   "private": true,
-  "version": "0.0.8",
+  "version": "0.0.7",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -16,6 +16,8 @@
   },
   "dependencies": {
     "@tauri-apps/api": "^1.0.2",
+    "element-plus": "^2.2.16",
+    "marked": "^4.1.0",
     "vue": "^3.2.37"
   },
   "devDependencies": {
@@ -25,9 +27,9 @@
     "@vitejs/plugin-vue": "^3.0.1",
     "adm-zip": "^0.5.9",
     "fs-extra": "^10.1.0",
+    "husky": "^7.0.0",
     "module": "^1.2.5",
     "node-fetch": "^3.2.10",
-    "husky": "^7.0.0",
     "typescript": "^4.6.4",
     "vite": "^3.0.2",
     "vue-tsc": "^0.40.0",

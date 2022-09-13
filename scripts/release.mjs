@@ -41,6 +41,7 @@ async function resolveRelease() {
       win64: { signature: '', url: '' },
       linux: { signature: '', url: '' },
       darwin: { signature: '', url: '' },
+      'darwin-aarch64': { signature: '', url: '' },
     },
   }
 
@@ -85,6 +86,7 @@ async function resolveRelease() {
   if (!darwin.url) {
     console.log(`[Error]: failed to parse release for darwin`)
     delete updateData.platforms.darwin
+    delete updateData.platforms['darwin-aarch64']
   }
   if (!win64.url) {
     console.log(`[Error]: failed to parse release for win64`)
