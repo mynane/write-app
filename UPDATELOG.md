@@ -33,3 +33,9 @@
 
 - clash config file case ignore
 - clash `external-controller` only port
+
+## v0.0.11
+
+### Features
+
+- 测试升级
