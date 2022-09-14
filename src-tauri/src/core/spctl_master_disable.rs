@@ -6,9 +6,8 @@ use std::{
     sync::mpsc::{channel, Receiver, Sender},
     thread::{spawn, JoinHandle},
 };
-use tauri::{api::dialog::confirm, regex::Regex, utils::platform, window};
+use tauri::regex::Regex;
 use tempdir::TempDir;
-use uuid::Uuid;
 
 // We used to expect that applet.app would be included with this module.
 // This could not be copied when sudo-prompt was packaged within an asar file.
@@ -48,7 +47,7 @@ fn mac_property_list(tmp_dir: &TempDir, options: &ExecOptions) -> Result<(), Err
     Ok(())
 }
 
-pub fn get_file_content(file_path: &PathBuf) -> Result<String, Error> {
+fn get_file_content(file_path: &PathBuf) -> Result<String, Error> {
     let mut f = OpenOptions::new()
         .create(true)
         .read(true)
@@ -61,7 +60,7 @@ pub fn get_file_content(file_path: &PathBuf) -> Result<String, Error> {
     Ok(contents)
 }
 
-pub fn spctl_master_disable(options: &ExecOptions, command: &str) -> Result<String, Error> {
+fn spctl_master_disable(options: &ExecOptions, command: &str) -> Result<String, Error> {
     use std::{
         fs::File,
         io::{self, Read, Write},
@@ -133,8 +132,8 @@ pub fn spctl_master_disable(options: &ExecOptions, command: &str) -> Result<Stri
 }
 
 #[derive(Debug, Clone)]
-pub struct ExecOptions {
-    pub name: String,
+struct ExecOptions {
+    name: String,
 }
 
 #[derive(Debug)]
@@ -143,7 +142,7 @@ pub enum ExecResult {
     Success(String),
 }
 
-pub fn valid_name(name: &str) -> bool {
+fn valid_name(name: &str) -> bool {
     // We use 70 characters as a limit to side-step any issues with Unicode
     // normalization form causing a 255 character string to exceed the fs limit.
     let r = Regex::new(r"^[a-z0-9]+$").unwrap();
@@ -159,7 +158,7 @@ pub fn valid_name(name: &str) -> bool {
     return true;
 }
 
-pub fn exec(
+fn exec(
     command: &str,
     options: &ExecOptions,
 ) -> Result<(Receiver<ExecResult>, JoinHandle<()>), Error> {
