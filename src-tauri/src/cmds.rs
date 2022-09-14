@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 use tauri::State;
 
 use crate::{
-    core::{ExecResult, Tasks},
+    core::{master_disable, ExecResult, Tasks},
     states::TasksState,
 };
 
@@ -48,18 +48,13 @@ pub async fn download(tasks_state: State<'_, TasksState>) -> Tasks {
 
 #[tauri::command]
 pub async fn spctl_master_disable() -> String {
-    #[cfg(target_os = "macos")]
-    {
-        let result = crate::core::master_disable();
-        match result {
-            ExecResult::Err(err) => {
-                return err;
-            }
-            ExecResult::Success(result) => {
-                return result;
-            }
+    let result = master_disable();
+    match result {
+        ExecResult::Err(err) => {
+            return err;
+        }
+        ExecResult::Success(result) => {
+            return result;
         }
     }
-
-    return String::from("platform not suppert");
 }

@@ -192,6 +192,17 @@ pub fn exec(
     Ok((rx, handle))
 }
 
+#[cfg(target_os = "linux")]
+pub fn master_disable() -> ExecResult {
+    ExecResult::Success(String::from("flatform not suppert"))
+}
+
+#[cfg(target_os = "windows")]
+pub fn master_disable() -> ExecResult {
+    ExecResult::Success(String::from("flatform not suppert"))
+}
+
+#[cfg(target_os = "macos")]
 pub fn master_disable() -> ExecResult {
     let options = ExecOptions {
         name: "app".to_owned(),
