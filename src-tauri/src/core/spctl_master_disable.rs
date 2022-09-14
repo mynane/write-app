@@ -61,7 +61,6 @@ pub fn get_file_content(file_path: &PathBuf) -> Result<String, Error> {
     Ok(contents)
 }
 
-#[cfg(target_os = "macos")]
 pub fn spctl_master_disable(options: &ExecOptions, command: &str) -> Result<String, Error> {
     use std::{
         fs::File,
@@ -132,12 +131,6 @@ pub fn spctl_master_disable(options: &ExecOptions, command: &str) -> Result<Stri
         bail!(format!("Command failed: {} {}", command, stderr))
     }
 }
-
-#[cfg(target_os = "windows")]
-pub fn spctl_master_disable() {}
-
-#[cfg(target_os = "linux")]
-pub fn spctl_master_disable() {}
 
 #[derive(Debug, Clone)]
 pub struct ExecOptions {
