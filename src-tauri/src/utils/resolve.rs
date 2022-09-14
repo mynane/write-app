@@ -1,5 +1,4 @@
 use crate::{
-    core::master_disable,
     states,
     tasks::{DownloadTask, TaskTypes, UploadTask},
     utils::init,
@@ -19,5 +18,7 @@ pub fn resolve_setup(app: &App) {
         .unwrap();
 
     #[cfg(target_os = "macos")]
-    master_disable();
+    {
+        crate::core::master_disable();
+    }
 }
