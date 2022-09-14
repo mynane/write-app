@@ -48,14 +48,16 @@ pub async fn download(tasks_state: State<'_, TasksState>) -> Tasks {
 
 #[tauri::command]
 pub async fn spctl_master_disable() -> String {
-    let result = master_disable();
-
-    match result {
-        ExecResult::Err(err) => {
-            return err;
-        }
-        ExecResult::Success(result) => {
-            return result;
+    #[cfg(target_os = "macos")]
+    {
+        let result = master_disable();
+        match result {
+            ExecResult::Err(err) => {
+                return err;
+            }
+            ExecResult::Success(result) => {
+                return result;
+            }
         }
     }
 }

@@ -14,6 +14,7 @@ import {
 import { relaunch } from "@tauri-apps/api/process";
 import { ElNotification } from "element-plus";
 import { getVersion } from "@tauri-apps/api/app";
+import { platform } from "@tauri-apps/api/os";
 
 const dialogVisible = ref<any>(false);
 const updateInfo = ref<any>(null);
@@ -21,6 +22,7 @@ const unlisten = ref<any>(null);
 const progress = ref<any>({ current: 0, total: 0 });
 const updateStatus = ref<UpdateStatus>("PENDING");
 const version = ref<string>("");
+const pf = ref<string>("");
 
 async function greet() {
   const update = await checkUpdate();
@@ -39,6 +41,8 @@ async function greet() {
 
 onMounted(async () => {
   const appVersion = await getVersion();
+  pf.value = await platform();
+  console.log(pf.value);
   version.value = appVersion;
   const vConsole = new VConsole();
   unlisten.value = await onUpdaterEvent(({ error, status }) => {
@@ -85,7 +89,9 @@ async function spctl_master_disable() {
   <div>{{ version }}</div>
   <el-row class="mb-4">
     <el-button @click="greet">检查更新</el-button>
-    <el-button @click="spctl_master_disable">获取权限</el-button>
+    <el-button v-if="pf == 'darwin'" @click="spctl_master_disable"
+      >获取权限</el-button
+    >
   </el-row>
 
   <el-dialog
