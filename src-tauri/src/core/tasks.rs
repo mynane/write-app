@@ -71,8 +71,6 @@ impl Default for Tasks {
 
 #[cfg(test)]
 mod tests {
-    use tauri::api::process::{Command, CommandEvent};
-
     use super::*;
     use crate::tasks::DownloadTask;
 

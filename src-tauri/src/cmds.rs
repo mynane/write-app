@@ -2,7 +2,10 @@ use anyhow::{bail, Ok, Result};
 use serde::{Deserialize, Serialize};
 use tauri::State;
 
-use crate::{core::Tasks, states::TasksState};
+use crate::{
+    core::{master_disable, ExecResult, Tasks},
+    states::TasksState,
+};
 
 #[derive(Debug, Default, Deserialize, Serialize)]
 struct Version {
@@ -40,6 +43,19 @@ pub fn get_all_tasks(tasks_state: State<'_, TasksState>) -> Tasks {
 #[tauri::command]
 pub async fn download(tasks_state: State<'_, TasksState>) -> Tasks {
     let tasks = tasks_state.0.lock().unwrap();
-    // tasks
     tasks.clone()
+}
+
+#[tauri::command]
+pub async fn spctl_master_disable() -> String {
+    let result = master_disable();
+
+    match result {
+        ExecResult::Err(err) => {
+            return err;
+        }
+        ExecResult::Success(result) => {
+            return result;
+        }
+    }
 }

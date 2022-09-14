@@ -10,7 +10,7 @@ mod states;
 mod tasks;
 mod utils;
 
-use crate::cmds::{get_all_tasks, greet};
+use crate::cmds::{get_all_tasks, greet, spctl_master_disable};
 use crate::utils::resolve;
 
 #[tokio::main]
@@ -18,7 +18,11 @@ async fn main() {
     tauri::Builder::default()
         .manage(states::TasksState::default())
         .setup(|app| Ok(resolve::resolve_setup(app)))
-        .invoke_handler(tauri::generate_handler![greet, get_all_tasks])
+        .invoke_handler(tauri::generate_handler![
+            greet,
+            get_all_tasks,
+            spctl_master_disable
+        ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

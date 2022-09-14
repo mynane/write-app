@@ -75,12 +75,17 @@ async function update() {
     await relaunch();
   }
 }
+
+async function spctl_master_disable() {
+  await invoke("spctl_master_disable");
+}
 </script>
 
 <template>
   <div>{{ version }}</div>
   <el-row class="mb-4">
     <el-button @click="greet">检查更新</el-button>
+    <el-button @click="spctl_master_disable">获取权限</el-button>
   </el-row>
 
   <el-dialog
