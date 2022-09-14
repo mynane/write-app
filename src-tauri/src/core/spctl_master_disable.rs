@@ -2,6 +2,7 @@ use anyhow::{bail, Error, Result};
 use std::fs::OpenOptions;
 use std::io::Read;
 use std::path::PathBuf;
+use std::process::Command;
 use std::{
     sync::mpsc::{channel, Receiver, Sender},
     thread::{spawn, JoinHandle},
@@ -35,14 +36,15 @@ fn mac_property_list(tmp_dir: &TempDir, options: &ExecOptions) -> Result<(), Err
         bail!("Value should not contain single quotes.")
     }
 
-    run_shell::cmd!(&format!(
-        "/usr/bin/defaults write \"{}\" \"{}\" \"{}\"",
-        plist.display(),
-        key,
-        value
-    ))
-    .run()
-    .unwrap();
+    Command::new("/usr/bin/defaults")
+        .args([
+            "write",
+            &format!("\"{}\"", plist.display()),
+            &format!("\"{}\"", key),
+            &format!("\"{}\"", value),
+        ])
+        .output()
+        .unwrap();
 
     Ok(())
 }
@@ -80,13 +82,15 @@ fn spctl_master_disable(options: &ExecOptions, command: &str) -> Result<String, 
     file.write_all(apple).unwrap();
     file.sync_all().unwrap();
 
-    run_shell::cmd!(&format!(
-        "/usr/bin/unzip -o {} -d {}",
-        zip.display(),
-        tmp_dir.path().display()
-    ))
-    .run()
-    .unwrap();
+    Command::new("/usr/bin/unzip")
+        .args([
+            "-o",
+            zip.display().to_string().as_str(),
+            "-d",
+            tmp_dir.path().display().to_string().as_str(),
+        ])
+        .output()
+        .unwrap();
 
     mac_property_list(&tmp_dir, &options).unwrap();
 
