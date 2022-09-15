@@ -21,16 +21,15 @@ pub fn resolve_setup(app: &App) {
     task.append_item(TaskTypes::Download(DownloadTask::new()))
         .unwrap();
 
-    let mut config = config_state.0.lock().unwrap();
-    let cfg = Configs::read_config();
+    let mut configs = config_state.0.lock().unwrap();
 
-    if !cfg.spctl_master_disable {
+    if !configs.0.spctl_master_disable {
         let result = master_disable();
         match result {
             crate::core::ExecResult::Err(_) => {}
             crate::core::ExecResult::Success(_) => {
-                config.spctl_master_disable = true;
-                config.save_config().unwrap();
+                configs.0.spctl_master_disable = true;
+                configs.save_config().unwrap();
             }
         }
     }

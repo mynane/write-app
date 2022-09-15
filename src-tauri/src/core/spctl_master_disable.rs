@@ -198,12 +198,12 @@ fn exec(
 
 #[cfg(target_os = "linux")]
 pub fn master_disable() -> ExecResult {
-    ExecResult::Success(String::from("flatform not suppert"))
+    ExecResult::Err(String::from("flatform not suppert"))
 }
 
 #[cfg(target_os = "windows")]
 pub fn master_disable() -> ExecResult {
-    ExecResult::Success(String::from("flatform not suppert"))
+    ExecResult::Err(String::from("flatform not suppert"))
 }
 
 #[cfg(target_os = "macos")]
