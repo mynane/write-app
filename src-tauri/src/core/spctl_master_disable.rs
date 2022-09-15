@@ -1,4 +1,5 @@
 use anyhow::{bail, Error, Result};
+use serde::{Deserialize, Serialize};
 use std::fs::OpenOptions;
 use std::io::Read;
 use std::path::PathBuf;
@@ -140,7 +141,7 @@ struct ExecOptions {
     name: String,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub enum ExecResult {
     Err(String),
     Success(String),

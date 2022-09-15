@@ -10,7 +10,7 @@ static APP_DIR: &str = "write-app";
 #[cfg(feature = "write-dev")]
 static APP_DIR: &str = "write-app-dev";
 
-static CLASH_CONFIG: &str = "config.yaml";
+static CONFIG_YAML: &str = "config.yaml";
 static VERGE_CONFIG: &str = "app.yaml";
 static PROFILE_YAML: &str = "profiles.yaml";
 static PROFILE_TEMP: &str = "write-app-runtime.yaml";
@@ -40,8 +40,8 @@ pub fn app_logs_dir() -> PathBuf {
     app_home_dir().join("logs")
 }
 
-pub fn clash_path() -> PathBuf {
-    app_home_dir().join(CLASH_CONFIG)
+pub fn config_path() -> PathBuf {
+    app_home_dir().join(CONFIG_YAML)
 }
 
 pub fn verge_path() -> PathBuf {

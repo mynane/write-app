@@ -42,12 +42,12 @@ fn init_log(log_dir: &PathBuf) {
 /// Initialize all the files from resources
 fn init_config(app_dir: &PathBuf) -> std::io::Result<()> {
     // target path
-    let clash_path = app_dir.join("config.yaml");
+    let config_path = app_dir.join("config.yaml");
     let app_path = app_dir.join("app.yaml");
     let profile_path = app_dir.join("profiles.yaml");
 
-    if !clash_path.exists() {
-        fs::File::create(clash_path)?.write(tmpl::CLASH_CONFIG)?;
+    if !config_path.exists() {
+        fs::File::create(config_path)?.write(tmpl::CONFIG_YAML)?;
     }
     if !app_path.exists() {
         fs::File::create(app_path)?.write(tmpl::APP_CONFIG)?;
@@ -60,25 +60,6 @@ fn init_config(app_dir: &PathBuf) -> std::io::Result<()> {
 
 /// initialize app
 pub fn init_app(package_info: &PackageInfo) {
-    // #[cfg(target_os = "macos")]
-    // tauri::async_runtime::spawn(async move {
-    //     let (mut rx, mut child) = Command::new("node")
-    //         .args(["--master-disable"])
-    //         .spawn()
-    //         .expect("Failed to spawn cargo");
-
-    //     let mut i = 0;
-    //     while let Some(event) = rx.recv().await {
-    //         if let CommandEvent::Stdout(line) = event {
-    //             println!("got: {}", line);
-    //             i += 1;
-    //             if i == 4 {
-    //                 child.write("message from Rust\n".as_bytes()).unwrap();
-    //                 i = 0;
-    //             }
-    //         }
-    //     }
-    // });
     // create app dir
     let app_dir = dirs::app_home_dir();
     let log_dir = dirs::app_logs_dir();

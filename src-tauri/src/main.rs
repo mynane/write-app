@@ -17,6 +17,7 @@ use crate::utils::resolve;
 async fn main() {
     tauri::Builder::default()
         .manage(states::TasksState::default())
+        .manage(states::ConfigsState::default())
         .setup(|app| Ok(resolve::resolve_setup(app)))
         .invoke_handler(tauri::generate_handler![
             greet,
