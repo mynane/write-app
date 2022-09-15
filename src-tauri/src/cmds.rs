@@ -1,9 +1,11 @@
+use anyhow::bail;
 use serde::{Deserialize, Serialize};
 use tauri::State;
 
 use crate::{
-    core::{master_disable, ExecResult, Tasks},
-    states::TasksState,
+    core::{master_disable, ConfigsInner, ExecResult, Tasks},
+    states::{ConfigsState, TasksState},
+    wrap_err,
 };
 
 #[derive(Debug, Default, Deserialize, Serialize)]
@@ -46,14 +48,17 @@ pub async fn download(tasks_state: State<'_, TasksState>) -> Tasks {
 }
 
 #[tauri::command]
-pub async fn spctl_master_disable() -> String {
+pub fn spctl_master_disable() -> Result<String, String> {
     let result = master_disable();
     match result {
-        ExecResult::Err(err) => {
-            return err;
-        }
-        ExecResult::Success(result) => {
-            return result;
-        }
+        ExecResult::Err(err) => Err(err),
+        ExecResult::Success(result) => Ok(result),
     }
+}
+
+#[tauri::command]
+pub fn get_configs(configs_state: State<'_, ConfigsState>) -> ConfigsInner {
+    let configs = configs_state.0.lock().unwrap();
+
+    configs.0.clone()
 }

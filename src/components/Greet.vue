@@ -16,6 +16,10 @@ import { ElNotification } from "element-plus";
 import { getVersion } from "@tauri-apps/api/app";
 import { platform } from "@tauri-apps/api/os";
 
+interface IConfigs {
+  spctlMasterDisable: boolean;
+}
+
 const dialogVisible = ref<any>(false);
 const updateInfo = ref<any>(null);
 const unlisten = ref<any>(null);
@@ -40,6 +44,11 @@ async function greet() {
 }
 
 onMounted(async () => {
+  const res = await invoke<IConfigs>("get_configs");
+  console.log(
+    "🚀 ~ file: Greet.vue ~ line 44 ~ onMounted ~ res",
+    res.spctlMasterDisable
+  );
   const appVersion = await getVersion();
   pf.value = await platform();
   console.log(pf.value);
@@ -81,7 +90,15 @@ async function update() {
 }
 
 async function spctl_master_disable() {
-  await invoke("spctl_master_disable");
+  try {
+    const result = await invoke("spctl_master_disable");
+    console.log(
+      "🚀 ~ file: Greet.vue ~ line 86 ~ spctl_master_disable ~ result",
+      result
+    );
+  } catch (error) {
+    console.log(error);
+  }
 }
 </script>
 
