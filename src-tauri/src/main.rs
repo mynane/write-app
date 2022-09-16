@@ -12,8 +12,6 @@ mod tasks;
 mod utils;
 
 use events::resolve_events;
-use tauri::api;
-use tauri::http::ResponseBuilder;
 
 use crate::cmds::{get_all_tasks, get_configs, greet, spctl_master_disable};
 use crate::utils::resolve;
@@ -22,6 +20,7 @@ use crate::utils::resolve;
 async fn main() {
     #[allow(unused_mut)]
     let mut builder = tauri::Builder::default()
+        .plugin(tauri_plugin_updater::init())
         .manage(states::TasksState::default())
         .manage(states::ConfigsState::default())
         .setup(|app| Ok(resolve::resolve_setup(app)))

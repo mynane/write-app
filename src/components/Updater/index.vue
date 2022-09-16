@@ -67,10 +67,12 @@ onBeforeUnmount(async () => {
     width="60%"
     :close-on-click-modal="false"
   >
-    <div v-html="marked(updater?.updateInfo?.body, { sanitize: true })" />
+    <div v-html="marked(updater?.updateInfo?.body ?? '', { sanitize: true })" />
     <div v-if="!!progress.total">
       <el-progress
-        :percentage="((progress.current / progress.total) * 100).toFixed(0)"
+        :percentage="
+          Number(((progress.current / progress.total) * 100).toFixed(0))
+        "
       />
     </div>
     <template #footer>
