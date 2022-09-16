@@ -75,6 +75,7 @@ fn spctl_master_disable(options: &ExecOptions, command: &str) -> Result<String, 
     // let username = whoami::username();
 
     let tmp_dir = TempDir::new(&format!("{}.app", options.name)).unwrap();
+    println!("{:?}", tmp_dir);
     let zip = tmp_dir.path().join("sudo-prompt-applet.zip");
 
     let mut file = File::create(&zip).unwrap();

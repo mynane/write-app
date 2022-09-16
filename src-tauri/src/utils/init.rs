@@ -66,8 +66,10 @@ pub fn init_app(package_info: &PackageInfo) {
     let profiles_dir = dirs::app_profiles_dir();
 
     let res_dir = dirs::app_resources_dir(package_info);
+    let html = tauri::WindowUrl::App("index.html".into());
 
-    println!("{:?}", res_dir);
+    println!("{:?} {:?}", res_dir, html.to_owned());
+
     if !app_dir.exists() {
         fs::create_dir_all(&app_dir).unwrap();
     }
@@ -82,4 +84,6 @@ pub fn init_app(package_info: &PackageInfo) {
     if let Err(err) = init_config(&app_dir) {
         log::error!("{err}");
     }
+
+    log::info!("app_resources_dir {:?}", res_dir);
 }

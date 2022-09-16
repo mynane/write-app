@@ -17,7 +17,6 @@ struct Version {
 
 #[tauri::command]
 pub fn greet(name: String, tasks_state: State<'_, TasksState>) -> String {
-    println!("{:?}", tasks_state.inner());
     let tasks = tasks_state.0.lock().unwrap();
     // let mut map = HashMap::new();
     // map.insert("app", "commonServices");
@@ -29,8 +28,6 @@ pub fn greet(name: String, tasks_state: State<'_, TasksState>) -> String {
 
     log::info!("[command:greet]: {}", 123123);
     log::error!("[command:greet]: {}", 123123);
-
-    println!("{:?}", tasks);
 
     format!("Hello! You've been greeted from Rust! {}", name)
 }

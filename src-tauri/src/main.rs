@@ -6,16 +6,22 @@
 // mod management;
 mod cmds;
 mod core;
+mod events;
 mod states;
 mod tasks;
 mod utils;
+
+use events::resolve_events;
+use tauri::api;
+use tauri::http::ResponseBuilder;
 
 use crate::cmds::{get_all_tasks, get_configs, greet, spctl_master_disable};
 use crate::utils::resolve;
 
 #[tokio::main]
 async fn main() {
-    tauri::Builder::default()
+    #[allow(unused_mut)]
+    let mut builder = tauri::Builder::default()
         .manage(states::TasksState::default())
         .manage(states::ConfigsState::default())
         .setup(|app| Ok(resolve::resolve_setup(app)))
@@ -24,7 +30,10 @@ async fn main() {
             get_all_tasks,
             spctl_master_disable,
             get_configs
-        ])
-        .run(tauri::generate_context!())
-        .expect("error while running tauri application");
+        ]);
+
+    builder
+        .build(tauri::generate_context!())
+        .expect("error while running tauri application")
+        .run(resolve_events);
 }
