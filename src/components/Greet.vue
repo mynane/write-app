@@ -5,6 +5,7 @@ import VConsole from "vconsole";
 
 import { getVersion } from "@tauri-apps/api/app";
 import { platform } from "@tauri-apps/api/os";
+import { useUpdaterStore } from "../stores/updater";
 
 interface IConfigs {
   spctlMasterDisable: boolean;
@@ -12,6 +13,7 @@ interface IConfigs {
 
 const version = ref<string>("");
 const pf = ref<string>("");
+const updater = useUpdaterStore();
 
 onMounted(async () => {
   const res = await invoke<IConfigs>("get_configs");
@@ -34,7 +36,7 @@ async function spctl_master_disable() {
 <template>
   <div>{{ version }}</div>
   <el-row class="mb-4">
-    <!-- <el-button @click="greet">检查更新</el-button> -->
+    <el-button @click="updater.check">检查更新</el-button>
     <el-button v-if="pf == 'darwin'" @click="spctl_master_disable"
       >获取权限</el-button
     >

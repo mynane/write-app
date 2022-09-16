@@ -1,32 +1,26 @@
 <script setup lang="ts">
-import { getVersion } from "@tauri-apps/api/app";
 import { listen, UnlistenFn } from "@tauri-apps/api/event";
-import { relaunch } from "@tauri-apps/api/process";
 import {
-  checkUpdate,
-  installUpdate,
   onUpdaterEvent,
   UpdateResult,
   UpdateStatus,
 } from "@tauri-apps/api/updater";
-import { ElNotification } from "element-plus";
 import { marked } from "marked";
 import { onMounted, ref, h, onBeforeUnmount, onBeforeMount } from "vue";
+import { useUpdaterStore } from "../../stores/updater";
 
 const listens: UnlistenFn[] = [];
 
-const dialogVisible = ref<boolean>(false);
-const updateInfo = ref<UpdateResult>();
 const progress = ref<{ current: number; total: number }>({
   current: 0,
   total: 0,
 });
-const updateStatus = ref<UpdateStatus>("PENDING");
-const loading = ref<boolean>(false);
+
+const updater = useUpdaterStore();
 
 onBeforeMount(async () => {
   const updateEventListens = await onUpdaterEvent(({ error, status }) => {
-    updateStatus.value = status;
+    updater.status = status;
 
     if (status === "DONE") {
       progress.value = { current: 0, total: 0 };
@@ -47,10 +41,10 @@ onBeforeMount(async () => {
 });
 
 onMounted(async () => {
-  await check();
+  await updater.checkAndUpdate();
 
   let timer = setInterval(async () => {
-    await check();
+    await updater.checkAndUpdate();
   }, 60 * 60 * 1000);
 
   listens.push(() => {
@@ -61,43 +55,6 @@ onMounted(async () => {
 onBeforeUnmount(async () => {
   listens.map(async (listen) => await listen());
 });
-
-async function update() {
-  loading.value = true;
-  if (updateStatus.value !== "DONE") {
-    await installUpdate();
-  } else {
-    await relaunch();
-  }
-  loading.value = false;
-}
-
-async function check() {
-  loading.value = true;
-  const update = await checkUpdate();
-
-  if (
-    dialogVisible.value &&
-    update.manifest?.version === updateInfo.value?.manifest?.version
-  ) {
-    loading.value = false;
-    return;
-  }
-
-  if (update.shouldUpdate) {
-    await installUpdate();
-    updateInfo.value = update;
-    dialogVisible.value = true;
-  }
-  // else {
-  //     ElNotification({
-  //       title: "版本检测",
-  //       message: h("i", { style: "color: teal" }, "已经是最新版本"),
-  // });
-  //   }
-
-  loading.value = false;
-}
 </script>
 
 <style lang="less" scoped>
@@ -105,12 +62,12 @@ async function check() {
 
 <template>
   <el-dialog
-    v-model="dialogVisible"
-    :title="updateInfo?.manifest?.version"
+    v-model="updater.visible"
+    :title="updater?.updateInfo?.version"
     width="60%"
     :close-on-click-modal="false"
   >
-    <div v-html="marked(updateInfo?.manifest?.body, { sanitize: true })" />
+    <div v-html="marked(updater?.updateInfo?.body, { sanitize: true })" />
     <div v-if="!!progress.total">
       <el-progress
         :percentage="((progress.current / progress.total) * 100).toFixed(0)"
@@ -118,12 +75,15 @@ async function check() {
     </div>
     <template #footer>
       <span class="dialog-footer">
-        <el-button :loading="loading" @click="dialogVisible = false"
+        <el-button :loading="updater.loading" @click="updater.visible = false"
           >取消</el-button
         >
-        <el-button :loading="loading" type="primary" @click="update">{{
-          updateStatus !== "DONE" ? "下载" : "重启升级"
-        }}</el-button>
+        <el-button
+          :loading="updater.loading"
+          type="primary"
+          @click="updater.update"
+          >{{ updater.status !== "DONE" ? "下载" : "重启升级" }}</el-button
+        >
       </span>
     </template>
   </el-dialog>
