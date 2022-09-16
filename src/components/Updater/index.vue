@@ -88,12 +88,13 @@ async function check() {
     await installUpdate();
     updateInfo.value = update;
     dialogVisible.value = true;
-  } else {
-    ElNotification({
-      title: "版本检测",
-      message: h("i", { style: "color: teal" }, "已经是最新版本"),
-    });
   }
+  // else {
+  //     ElNotification({
+  //       title: "版本检测",
+  //       message: h("i", { style: "color: teal" }, "已经是最新版本"),
+  // });
+  //   }
 
   loading.value = false;
 }
