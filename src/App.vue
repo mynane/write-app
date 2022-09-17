@@ -8,13 +8,14 @@
         <router-view />
       </div>
     </div>
-
     <Updater />
   </el-config-provider>
 </template>
 
 <script setup lang="ts">
 import Updater from "./components/Updater/index.vue";
+import useClientDark from "~/hooks/useClientDark.vue";
+const { isDark, toggleTheme } = useClientDark();
 </script>
 
 <style lang="scss">
