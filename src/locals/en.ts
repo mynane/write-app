@@ -1,20 +1,19 @@
 export default {
-  login: {
-    login: 'login',
-    userName: 'userName',
-    password: 'password',
-  },
   lang: {
     en: 'English',
     zh: 'Chinese',
   },
   menu: {
-    setting: 'Setting',
+    setting: 'Settings',
     home: 'Home',
   },
   setting: {
     themeMode: 'Theme Mode',
     language: 'Language',
     version: 'Version',
+    openAppDir: 'Open App Dir',
+    openLogsDir: 'Open Logs Dir',
+    spctlMasterDisable: 'Mac Trust All Sources',
+    getPermission: 'Get Permission',
   },
 }

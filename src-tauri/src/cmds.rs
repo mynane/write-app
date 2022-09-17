@@ -1,10 +1,11 @@
 use anyhow::bail;
 use serde::{Deserialize, Serialize};
-use tauri::{App, Manager, State, Window};
+use tauri::{api, App, Manager, State, Window};
 
 use crate::{
     core::{master_disable, ConfigsInner, ExecResult, Tasks},
     states::{ConfigsState, TasksState},
+    utils::dirs,
     wrap_err,
 };
 
@@ -74,4 +75,24 @@ pub fn change_lang(lang: String, configs_state: State<'_, ConfigsState>) -> Conf
     configs.0.lang = lang;
     configs.save_config().unwrap();
     configs.0.clone()
+}
+
+/// kill all sidecars when update app
+#[tauri::command]
+pub fn kill_sidecars() {
+    api::process::kill_children();
+}
+
+/// open app config dir
+#[tauri::command]
+pub fn open_app_dir() -> Result<(), String> {
+    let app_dir = dirs::app_home_dir();
+    wrap_err!(open::that(app_dir))
+}
+
+/// open logs dir
+#[tauri::command]
+pub fn open_logs_dir() -> Result<(), String> {
+    let log_dir = dirs::app_logs_dir();
+    wrap_err!(open::that(log_dir))
 }

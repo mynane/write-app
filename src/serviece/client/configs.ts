@@ -25,3 +25,27 @@ export const changeTheme = async (theme: '' | 'dark') => {
 export const changeLang = async (lang: 'zh' | 'en') => {
   return await invoke('change_lang', { lang })
 }
+
+/**
+ * 打开应用目录
+ * @returns
+ */
+export const openAppDir = async () => {
+  return await invoke('open_app_dir')
+}
+
+/**
+ * 打开日志目录
+ * @returns
+ */
+export const openLogsDir = async () => {
+  return await invoke('open_logs_dir')
+}
+
+/**
+ * mac 信任所有来源（自动更新需要）
+ * @returns
+ */
+export const spctlMasterDisable = async () => {
+  return await invoke('spctl_master_disable')
+}

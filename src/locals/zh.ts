@@ -1,9 +1,4 @@
 export default {
-  login: {
-    login: '登录',
-    userName: '用户名',
-    password: '密码',
-  },
   lang: {
     en: '英文',
     zh: '中文',
@@ -16,5 +11,9 @@ export default {
     themeMode: '暗夜模式',
     language: '语言设置',
     version: '版本',
+    openAppDir: '应用目录',
+    openLogsDir: '日志目录',
+    spctlMasterDisable: 'Mac信任所有来源',
+    getPermission: '获取权限',
   },
 }

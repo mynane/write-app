@@ -14,7 +14,8 @@ mod utils;
 use events::resolve_events;
 
 use crate::cmds::{
-    change_lang, change_theme, get_all_tasks, get_configs, greet, spctl_master_disable,
+    change_lang, change_theme, get_all_tasks, get_configs, greet, kill_sidecars, open_app_dir,
+    open_logs_dir, spctl_master_disable,
 };
 use crate::utils::resolve;
 
@@ -33,6 +34,9 @@ async fn main() {
             change_theme,
             get_configs,
             change_lang,
+            kill_sidecars,
+            open_app_dir,
+            open_logs_dir
         ]);
 
     builder
