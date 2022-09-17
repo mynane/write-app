@@ -8,6 +8,8 @@ use serde::{Deserialize, Serialize};
 #[serde(rename_all = "camelCase")]
 pub struct ConfigsInner {
     pub spctl_master_disable: bool,
+    pub theme: String,
+    pub lang: String,
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize)]

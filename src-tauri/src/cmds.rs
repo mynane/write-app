@@ -59,3 +59,19 @@ pub fn get_configs(configs_state: State<'_, ConfigsState>) -> ConfigsInner {
 
     configs.0.clone()
 }
+
+#[tauri::command]
+pub fn change_theme(theme: String, configs_state: State<'_, ConfigsState>) -> ConfigsInner {
+    let mut configs = configs_state.0.lock().unwrap();
+    configs.0.theme = theme;
+    configs.save_config().unwrap();
+    configs.0.clone()
+}
+
+#[tauri::command]
+pub fn change_lang(lang: String, configs_state: State<'_, ConfigsState>) -> ConfigsInner {
+    let mut configs = configs_state.0.lock().unwrap();
+    configs.0.lang = lang;
+    configs.save_config().unwrap();
+    configs.0.clone()
+}

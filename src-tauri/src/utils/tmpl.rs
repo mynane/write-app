@@ -4,6 +4,8 @@
 pub const CONFIG_YAML: &[u8] = br#"# Default Config For Clash Core
 
 spctl_master_disable: false
+theme: light
+lang: ~
 "#;
 
 /// template for `profiles.yaml`

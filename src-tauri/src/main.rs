@@ -13,7 +13,9 @@ mod utils;
 
 use events::resolve_events;
 
-use crate::cmds::{get_all_tasks, get_configs, greet, spctl_master_disable};
+use crate::cmds::{
+    change_lang, change_theme, get_all_tasks, get_configs, greet, spctl_master_disable,
+};
 use crate::utils::resolve;
 
 #[tokio::main]
@@ -28,7 +30,9 @@ async fn main() {
             greet,
             get_all_tasks,
             spctl_master_disable,
-            get_configs
+            change_theme,
+            get_configs,
+            change_lang,
         ]);
 
     builder

@@ -4,4 +4,8 @@ export default {
     userName: 'userName',
     password: 'password',
   },
+  lang: {
+    en: 'English',
+    zh: 'Chinese',
+  },
 }
