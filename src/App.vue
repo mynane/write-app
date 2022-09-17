@@ -1,9 +1,12 @@
 <template>
   <el-config-provider namespace="ep">
-    <BaseHeader />
-    <div style="display: flex">
-      <BaseSide />
-      <router-view />
+    <div class="wrap">
+      <div class="base-side">
+        <BaseSide />
+      </div>
+      <div class="content">
+        <router-view />
+      </div>
     </div>
 
     <Updater />
@@ -14,13 +17,26 @@
 import Updater from "./components/Updater/index.vue";
 </script>
 
-<style>
+<style lang="scss">
 #app {
-  text-align: center;
   color: var(--ep-text-color-primary);
 }
 
-.element-plus-logo {
-  width: 50%;
+.wrap {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+
+  .ep-menu {
+    height: 100vh;
+  }
+}
+
+.content {
+  height: 100vh;
+  overflow-y: auto;
+  padding: 20px;
+  flex: 1;
+  box-sizing: border-box;
 }
 </style>

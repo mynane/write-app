@@ -1,10 +1,6 @@
 <script setup lang="ts">
 import { listen, UnlistenFn } from "@tauri-apps/api/event";
-import {
-  onUpdaterEvent,
-  UpdateResult,
-  UpdateStatus,
-} from "@tauri-apps/api/updater";
+import { onUpdaterEvent } from "@tauri-apps/api/updater";
 import { marked } from "marked";
 import { onMounted, ref, h, onBeforeUnmount, onBeforeMount } from "vue";
 import { useUpdaterStore } from "../../stores/updater";
@@ -19,37 +15,41 @@ const progress = ref<{ current: number; total: number }>({
 const updater = useUpdaterStore();
 
 onBeforeMount(async () => {
-  const updateEventListens = await onUpdaterEvent(({ error, status }) => {
-    updater.status = status;
+  try {
+    const updateEventListens = await onUpdaterEvent(({ error, status }) => {
+      updater.status = status;
 
-    if (status === "DONE") {
-      progress.value = { current: 0, total: 0 };
-    }
-  });
+      if (status === "DONE") {
+        progress.value = { current: 0, total: 0 };
+      }
+    });
 
-  const progressListens = await listen<{
-    chunkLength: number;
-    contentLength?: number;
-  }>("tauri://update-download-progress", function (event) {
-    progress.value = {
-      current: progress.value.current + event.payload.chunkLength,
-      total: event.payload.contentLength ?? progress.value.total,
-    };
-  });
+    const progressListens = await listen<{
+      chunkLength: number;
+      contentLength?: number;
+    }>("tauri://update-download-progress", function (event) {
+      progress.value = {
+        current: progress.value.current + event.payload.chunkLength,
+        total: event.payload.contentLength ?? progress.value.total,
+      };
+    });
 
-  listens.push(updateEventListens, progressListens);
+    listens.push(updateEventListens, progressListens);
+  } catch (error) {}
 });
 
 onMounted(async () => {
-  await updater.checkAndUpdate();
-
-  let timer = setInterval(async () => {
+  try {
     await updater.checkAndUpdate();
-  }, 60 * 60 * 1000);
 
-  listens.push(() => {
-    clearInterval(timer);
-  });
+    let timer = setInterval(async () => {
+      await updater.checkAndUpdate();
+    }, 60 * 60 * 1000);
+
+    listens.push(() => {
+      clearInterval(timer);
+    });
+  } catch (error) {}
 });
 
 onBeforeUnmount(async () => {
@@ -57,7 +57,7 @@ onBeforeUnmount(async () => {
 });
 </script>
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
 </style>
 
 <template>

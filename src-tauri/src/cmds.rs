@@ -1,6 +1,6 @@
 use anyhow::bail;
 use serde::{Deserialize, Serialize};
-use tauri::State;
+use tauri::{App, Manager, State, Window};
 
 use crate::{
     core::{master_disable, ConfigsInner, ExecResult, Tasks},

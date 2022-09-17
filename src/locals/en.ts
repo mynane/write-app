@@ -8,4 +8,13 @@ export default {
     en: 'English',
     zh: 'Chinese',
   },
+  menu: {
+    setting: 'Setting',
+    home: 'Home',
+  },
+  setting: {
+    themeMode: 'Theme Mode',
+    language: 'Language',
+    version: 'Version',
+  },
 }

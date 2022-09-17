@@ -1,7 +1,7 @@
 <template>
   <div>
-    <img alt="Vue logo" class="element-plus-logo" src="../assets/logo.png" />
-    <HelloWorld msg="Hello Vue 3.0 + Element Plus + Vite" />
+    12312
+    <!-- <HelloWorld msg="Hello Vue 3.0 + Element Plus + Vite" /> -->
   </div>
 </template>
 

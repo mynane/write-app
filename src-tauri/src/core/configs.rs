@@ -3,13 +3,24 @@ use std::sync::{Arc, Mutex};
 use crate::utils::{config, dirs};
 use anyhow::Result;
 use serde::{Deserialize, Serialize};
+use tauri::Theme;
 
-#[derive(Debug, Default, Clone, Deserialize, Serialize)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ConfigsInner {
     pub spctl_master_disable: bool,
     pub theme: String,
     pub lang: String,
+}
+
+impl Default for ConfigsInner {
+    fn default() -> Self {
+        ConfigsInner {
+            spctl_master_disable: false,
+            theme: "".to_string(),
+            lang: "zh".to_string(),
+        }
+    }
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize)]

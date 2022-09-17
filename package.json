@@ -24,6 +24,7 @@
   },
   "devDependencies": {
     "@actions/github": "^5.0.3",
+    "@element-plus/icons-vue": "^2.0.9",
     "@tauri-apps/cli": "^1.0.5",
     "@types/marked": "^4.0.7",
     "@types/node": "^18.7.10",
@@ -31,8 +32,10 @@
     "adm-zip": "^0.5.9",
     "fs-extra": "^10.1.0",
     "husky": "^7.0.0",
+    "install": "^0.13.0",
     "module": "^1.2.5",
     "node-fetch": "^3.2.10",
+    "npm": "^8.19.2",
     "sass": "^1.54.9",
     "typescript": "^4.6.4",
     "unocss": "^0.45.21",
