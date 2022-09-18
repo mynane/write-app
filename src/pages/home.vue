@@ -16,10 +16,16 @@
                 <el-button class="button" icon="ArrowRight" @click="openHome"
                   >打开目录页</el-button
                 >
-                <el-button class="button" @click="createRepFn(item)"
+                <el-button
+                  :loading="cloneLoading"
+                  class="button"
+                  @click="createRepFn(item)"
                   >clone</el-button
                 >
-                <el-button class="button" @click="openCode(item)"
+                <el-button
+                  :loading="openLoading"
+                  class="button"
+                  @click="openCode(item)"
                   >code</el-button
                 >
               </div>
@@ -44,6 +50,8 @@ import { createRep } from "~/serviece/client/rep";
 
 const repository = ref<string>("");
 const rep = ref<any>({ items: [] });
+const openLoading = ref<boolean>(false);
+const cloneLoading = ref<boolean>(false);
 
 async function openHome() {
   console.log(rep.value);
@@ -62,6 +70,7 @@ onMounted(async () => {
 
 async function openCode(item: any) {
   console.log(`${rep.value.basic_dir}/${item.host}/${item.host}/${item.name}`);
+  openLoading.value = true;
   const command = new Command("code", ["."], {
     cwd: `${rep.value.basic_dir}/${item.host}/${item.group}/${item.name}`,
   });
@@ -73,6 +82,7 @@ async function openCode(item: any) {
     console.log(
       `command finished with code ${data.code} and signal ${data.signal}`
     );
+    openLoading.value = false;
   });
   command.on("error", (error) => console.error(`command error: "${error}"`));
   command.stdout.on("data", (line) => console.log(`command stdout: "${line}"`));
@@ -85,6 +95,7 @@ async function createRepFn(item: any) {
   try {
     const path: any = await createRep(item);
     //${path} && git clone ${item.uri}
+    cloneLoading.value = true;
     const command = new Command("git", ["clone", item.uri], { cwd: path });
     command.on("close", (data) => {
       if (!data.code) {
@@ -93,6 +104,8 @@ async function createRepFn(item: any) {
       console.log(
         `command finished with code ${data.code} and signal ${data.signal}`
       );
+
+      cloneLoading.value = false;
     });
     command.on("error", (error) => console.error(`command error: "${error}"`));
     command.stdout.on("data", (line) =>

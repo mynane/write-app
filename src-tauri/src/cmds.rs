@@ -131,7 +131,8 @@ pub fn create_rep(
     let mut rep = rep_state.0.lock().unwrap();
     let rep_dir = Path::new(&rep.0.basic_dir.clone().unwrap())
         .join(&item.host.unwrap())
-        .join(&item.group.unwrap());
+        .join(&item.group.unwrap())
+        .join(&item.name.unwrap());
 
     if rep_dir.exists() {
         return Err("repository path exists".to_string());
