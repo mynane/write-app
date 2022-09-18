@@ -12,7 +12,25 @@
   },
   "tauri": {
     "allowlist": {
-      "all": true
+      "all": true,
+      "shell": {
+        "all": true,
+        "scope": [
+          {
+            "name": "git",
+            "cmd": "git",
+            "args": true
+          },
+          {
+            "name": "code",
+            "cmd": "code",
+            "args": true
+          }
+        ]
+      },
+      "fs": {
+        "scope": ["$HOME", "$HOME/*"]
+      }
     },
     "bundle": {
       "active": true,

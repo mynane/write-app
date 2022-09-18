@@ -1,7 +1,7 @@
 ///! Some config file template
 
 /// template for clash core `config.yaml`
-pub const CONFIG_YAML: &[u8] = br#"# Default Config For Clash Core
+pub const CONFIG_YAML: &[u8] = br#"# Default Config 
 
 spctl_master_disable: false
 theme: light
@@ -19,4 +19,11 @@ items: ~
 pub const APP_CONFIG: &[u8] = b"# Defaulf Config For APP
 
 
+";
+
+/// template for `profiles.yaml`
+pub const REPOSITORY_CONFIG: &[u8] = b"# PDefault Config for Repository
+
+basic_dir: ~
+items: ~
 ";

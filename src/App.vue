@@ -15,7 +15,35 @@
 <script setup lang="ts">
 import Updater from "./components/Updater/index.vue";
 import useClientDark from "~/hooks/useClientDark.vue";
+import { onMounted } from "@vue/runtime-core";
+import { getBasicDir, setBasicDir } from "./serviece/client/rep";
+import { dialog } from "@tauri-apps/api";
+import { useI18n } from "vue-i18n";
+import { ComponentInternalInstance, getCurrentInstance } from "vue";
 const { isDark, toggleTheme } = useClientDark();
+
+let { proxy }: any = getCurrentInstance();
+
+onMounted(async () => {
+  try {
+    const basic_dir = await getBasicDir();
+
+    if (!basic_dir) {
+      const selected = await dialog.open({
+        title: proxy.$t("common.basicDir"),
+        directory: true,
+      });
+
+      console.log(selected);
+
+      if (selected) {
+        await setBasicDir(selected as string);
+      }
+    }
+  } catch (error) {
+    console.log(error);
+  }
+});
 </script>
 
 <style lang="scss">

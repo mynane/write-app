@@ -1,10 +1,12 @@
-use anyhow::bail;
+use std::{fs, path::Path};
+
+use anyhow::{bail, Result};
 use serde::{Deserialize, Serialize};
 use tauri::{api, App, Manager, State, Window};
 
 use crate::{
-    core::{master_disable, ConfigsInner, ExecResult, Tasks},
-    states::{ConfigsState, TasksState},
+    core::{master_disable, ConfigsInner, ExecResult, RepInner, RepItem, Tasks},
+    states::{ConfigsState, RepositoriesState, TasksState},
     utils::dirs,
     wrap_err,
 };
@@ -95,4 +97,71 @@ pub fn open_app_dir() -> Result<(), String> {
 pub fn open_logs_dir() -> Result<(), String> {
     let log_dir = dirs::app_logs_dir();
     wrap_err!(open::that(log_dir))
+}
+
+// Repository
+
+#[tauri::command]
+pub fn get_repositories(rep_state: State<'_, RepositoriesState>) -> RepInner {
+    let rep = rep_state.0.lock().unwrap();
+
+    rep.0.clone()
+}
+
+// #[tauri::command]
+// pub fn get_rep_width_uri(uri: String, rep_state: State<'_, RepositoriesState>) -> RepItem {
+//     let mut rep = rep_state.0.lock().unwrap();
+
+//     let result = rep.get_rep_width_uri(uri).unwrap().clone().unwrap();
+//     result
+// }
+
+#[tauri::command]
+pub fn append_rep(item: RepItem, rep_state: State<'_, RepositoriesState>) -> Result<(), String> {
+    let mut rep = rep_state.0.lock().unwrap();
+
+    wrap_err!(rep.append_item(item))
+}
+
+#[tauri::command]
+pub fn create_rep(
+    item: RepItem,
+    rep_state: State<'_, RepositoriesState>,
+) -> Result<String, String> {
+    let mut rep = rep_state.0.lock().unwrap();
+    let rep_dir = Path::new(&rep.0.basic_dir.clone().unwrap())
+        .join(&item.host.unwrap())
+        .join(&item.group.unwrap());
+
+    if rep_dir.exists() {
+        return Err("repository path exists".to_string());
+    }
+
+    fs::create_dir_all(&rep_dir).unwrap();
+
+    Ok(rep_dir.display().to_string())
+}
+
+#[tauri::command]
+pub fn get_basic_dir(rep_state: State<'_, RepositoriesState>) -> Result<Option<String>, String> {
+    let mut rep = rep_state.0.lock().unwrap();
+
+    wrap_err!(rep.get_basic_dir())
+}
+
+#[tauri::command]
+pub fn set_basic_dir(
+    basic_dir: String,
+    rep_state: State<'_, RepositoriesState>,
+) -> Result<Option<String>, String> {
+    let mut rep = rep_state.0.lock().unwrap();
+
+    wrap_err!(rep.set_basic_dir(basic_dir))
+}
+
+/// open logs dir
+#[tauri::command]
+pub fn open_dir(dir: String) -> Result<(), String> {
+    let dir = Path::new(&dir);
+    wrap_err!(open::that(dir))
 }

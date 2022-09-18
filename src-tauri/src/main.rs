@@ -14,8 +14,9 @@ mod utils;
 use events::resolve_events;
 
 use crate::cmds::{
-    change_lang, change_theme, get_all_tasks, get_configs, greet, kill_sidecars, open_app_dir,
-    open_logs_dir, spctl_master_disable,
+    append_rep, change_lang, change_theme, create_rep, get_all_tasks, get_basic_dir, get_configs,
+    get_repositories, greet, kill_sidecars, open_app_dir, open_dir, open_logs_dir, set_basic_dir,
+    spctl_master_disable,
 };
 use crate::utils::resolve;
 
@@ -26,6 +27,7 @@ async fn main() {
         .plugin(tauri_plugin_updater::init())
         .manage(states::TasksState::default())
         .manage(states::ConfigsState::default())
+        .manage(states::RepositoriesState::default())
         .setup(|app| Ok(resolve::resolve_setup(app)))
         .invoke_handler(tauri::generate_handler![
             greet,
@@ -36,7 +38,15 @@ async fn main() {
             change_lang,
             kill_sidecars,
             open_app_dir,
-            open_logs_dir
+            open_logs_dir,
+            // Rep
+            get_repositories,
+            append_rep,
+            get_basic_dir,
+            set_basic_dir,
+            create_rep,
+            // common
+            open_dir
         ]);
 
     builder

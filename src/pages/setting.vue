@@ -37,7 +37,7 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeMount, reactive, ref } from "vue";
+import { onBeforeMount, onMounted, reactive, ref } from "vue";
 import { changeClientLang } from "~/locals";
 import useClientDark from "~/hooks/useClientDark.vue";
 import { getVersion } from "@tauri-apps/api/app";
@@ -65,7 +65,7 @@ const settings = reactive<any>({
   platform: "",
 });
 
-onBeforeMount(async () => {
+onMounted(async () => {
   try {
     settings.version = await getVersion();
     settings.configs = await getConfigs();

@@ -16,4 +16,7 @@ export default {
     spctlMasterDisable: 'Mac Trust All Sources',
     getPermission: 'Get Permission',
   },
+  common: {
+    basicDir: 'Basic Dir',
+  },
 }

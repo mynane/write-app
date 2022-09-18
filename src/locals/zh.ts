@@ -16,4 +16,7 @@ export default {
     spctlMasterDisable: 'Mac信任所有来源',
     getPermission: '获取权限',
   },
+  common: {
+    basicDir: '基础路径',
+  },
 }

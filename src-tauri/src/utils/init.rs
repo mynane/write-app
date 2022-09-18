@@ -45,6 +45,7 @@ fn init_config(app_dir: &PathBuf) -> std::io::Result<()> {
     let config_path = app_dir.join("config.yaml");
     let app_path = app_dir.join("app.yaml");
     let profile_path = app_dir.join("profiles.yaml");
+    let repository_path = app_dir.join("repositories.yaml");
 
     if !config_path.exists() {
         fs::File::create(config_path)?.write(tmpl::CONFIG_YAML)?;
@@ -54,6 +55,9 @@ fn init_config(app_dir: &PathBuf) -> std::io::Result<()> {
     }
     if !profile_path.exists() {
         fs::File::create(profile_path)?.write(tmpl::PROFILES_CONFIG)?;
+    }
+    if !repository_path.exists() {
+        fs::File::create(repository_path)?.write(tmpl::REPOSITORY_CONFIG)?;
     }
     Ok(())
 }
