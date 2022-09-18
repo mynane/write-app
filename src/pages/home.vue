@@ -42,7 +42,7 @@ import { onMounted, reactive, ref } from "vue";
 import { openDir } from "~/serviece/client/common";
 import { createRep } from "~/serviece/client/rep";
 
-const repository = ref<string>("git@github.com:mynane/rust-swc.git");
+const repository = ref<string>("");
 const rep = ref<any>({ items: [] });
 
 async function openHome() {
@@ -50,10 +50,14 @@ async function openHome() {
   await openDir(rep.value.basic_dir);
 }
 
-onMounted(async () => {
+async function get_rep() {
   try {
     rep.value = await invoke("get_repositories");
   } catch (error) {}
+}
+
+onMounted(async () => {
+  await get_rep();
 });
 
 async function openCode(item: any) {
@@ -106,27 +110,32 @@ async function createRepFn(item: any) {
 
 async function searchPerson() {
   var repRegex =
-    /^(https|git)[@|:\/\/]([a-z0-9\.-]+)(:|\/)([a-z-]+)\/([a-z-]+)\.git$/;
-  let match = repository.value.match(repRegex);
+    /^(https|git)(@|:\/\/)([a-z0-9\.-]+)(:|\/)([a-z0-9-]+)\/([a-z0-9-]+)\.git$/;
 
   let result: RegExpMatchArray | null = repository.value.match(repRegex);
 
   if (!result) {
+    ElMessage.error("输入链接不是一个仓库");
     return;
   }
   let result2 = {
     protocol: result[1],
-    host: result[2],
-    group: result[4],
-    name: result[5],
+    host: result[3],
+    group: result[5],
+    name: result[6],
   };
 
-  await invoke("append_rep", {
-    item: {
-      ...result2,
-      uri: "git@github.com:mynane/rust-swc.git",
-    },
-  });
+  try {
+    await invoke("append_rep", {
+      item: {
+        ...result2,
+        uri: repository.value,
+      },
+    });
+    await get_rep();
+  } catch (error) {
+    ElMessage.error("添加链接失败");
+  }
 
   console.log(result);
   console.log(repository);
