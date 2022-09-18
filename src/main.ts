@@ -3,6 +3,7 @@ import { createPinia } from 'pinia'
 import i18n from './locals'
 import router from './router'
 import App from './App.vue'
+import VConsole from 'vconsole'
 
 import '~/styles/index.scss'
 import 'uno.css'
@@ -11,6 +12,7 @@ import 'uno.css'
 import 'element-plus/theme-chalk/src/message.scss'
 import loadIcon from './utils/loadIcon'
 
+new VConsole()
 const pinia = createPinia()
 
 const app = createApp(App)
