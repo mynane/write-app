@@ -129,18 +129,21 @@ pub fn create_rep(
     rep_state: State<'_, RepositoriesState>,
 ) -> Result<String, String> {
     let mut rep = rep_state.0.lock().unwrap();
-    let rep_dir = Path::new(&rep.0.basic_dir.clone().unwrap())
+    let group_dir = Path::new(&rep.0.basic_dir.clone().unwrap())
         .join(&item.host.unwrap())
-        .join(&item.group.unwrap())
-        .join(&item.name.unwrap());
+        .join(&item.group.unwrap());
+
+    let rep_dir = group_dir.join(&item.name.unwrap());
 
     if rep_dir.exists() {
         return Err("repository path exists".to_string());
     }
 
-    fs::create_dir_all(&rep_dir).unwrap();
+    if !group_dir.exists() {
+        fs::create_dir_all(&rep_dir).unwrap();
+    }
 
-    Ok(rep_dir.display().to_string())
+    Ok(group_dir.display().to_string())
 }
 
 #[tauri::command]
