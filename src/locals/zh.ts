@@ -1,12 +1,4 @@
 export default {
-  lang: {
-    en: '英文',
-    zh: '中文',
-  },
-  menu: {
-    setting: '设置',
-    home: '首页',
-  },
   setting: {
     themeMode: '暗夜模式',
     language: '语言设置',
@@ -17,6 +9,19 @@ export default {
     getPermission: '获取权限',
   },
   common: {
+    fail: '失败',
+    success: '成功',
     basicDir: '基础路径',
+    add: '新增',
+    confirm: '确认',
+    cancel: '取消',
+    keyword: '请输入关键词',
+    clone: '克隆',
+    open: '打开目录',
+    code: 'vscode打开',
+    delete: '删除',
+  },
+  home: {
+    inputRepUrl: '请输入仓库地址',
   },
 }

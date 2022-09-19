@@ -3,14 +3,14 @@ use tauri::{api, AppHandle, Manager, RunEvent};
 /// handle events
 pub fn resolve_events(app_handle: &AppHandle, event: RunEvent) {
     match event {
-        tauri::RunEvent::WindowEvent { label, event, .. } => match event {
-            tauri::WindowEvent::CloseRequested { api, .. } => {
-                let app_handle = app_handle.clone();
-                api.prevent_close();
-                app_handle.get_window(&label).unwrap().hide().unwrap();
-            }
-            _ => {}
-        },
+        // tauri::RunEvent::WindowEvent { label, event, .. } => match event {
+        //     tauri::WindowEvent::CloseRequested { api, .. } => {
+        //         let app_handle = app_handle.clone();
+        //         api.prevent_close();
+        //         app_handle.get_window(&label).unwrap().hide().unwrap();
+        //     }
+        //     _ => {}
+        // },
         tauri::RunEvent::ExitRequested { .. } => {
             api::process::kill_children();
         }

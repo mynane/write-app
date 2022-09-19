@@ -1,12 +1,34 @@
 
 <template>
   <div>
-    <el-input
-      v-model="repository"
-      placeholder="输入仓库地址"
-      v-on:keyup.enter.native="searchPerson"
-    />
-    <div>
+    <div class="home-header">
+      <el-input
+        v-model.trim="search"
+        :placeholder="$t('home.inputRepUrl')"
+        v-on:keyup.enter.native="searchRep"
+        :suffix-icon="Search"
+      />
+      <div class="home-header-add">
+        <el-tooltip :content="$t('common.add')"
+          ><el-button
+            type="primary"
+            :icon="Edit"
+            circle
+            @click="visible = true"
+        /></el-tooltip>
+      </div>
+    </div>
+
+    <div class="home-body">
+      <rep-card
+        v-for="item in rep.items"
+        :key="item.uri"
+        :item="item"
+        :basic_dir="rep.basic_dir"
+      ></rep-card>
+    </div>
+
+    <!-- <div>
       <el-row :gutter="12">
         <el-col :span="8" v-for="item in rep.items" :key="item.uri">
           <el-card shadow="hover">
@@ -34,8 +56,21 @@
           </el-card>
         </el-col>
       </el-row>
-    </div>
+    </div> -->
   </div>
+  <el-dialog v-model="visible" :title="$t('common.add')" width="80%">
+    <el-input v-model="repository" :placeholder="$t('common.keyword')" />
+    <template #footer>
+      <el-space>
+        <el-button @click="visible = false">{{
+          $t("common.cancel")
+        }}</el-button>
+        <el-button type="primary" @click="onCreateRep">{{
+          $t("common.confirm")
+        }}</el-button>
+      </el-space>
+    </template>
+  </el-dialog>
 </template>
 
 <script setup lang="ts">
@@ -44,19 +79,19 @@
 import { Command } from "@tauri-apps/api/shell";
 import { invoke } from "@tauri-apps/api/tauri";
 import { ElMessage } from "element-plus";
-import { onMounted, reactive, ref } from "vue";
-import { openDir } from "~/serviece/client/common";
-import { createRep } from "~/serviece/client/rep";
+import { getCurrentInstance, onMounted, reactive, ref } from "vue";
+import { Search, Edit } from "@element-plus/icons-vue";
+import RepCard from "~/components/repCard/index.vue";
+
+let { proxy }: any = getCurrentInstance();
 
 const repository = ref<string>("");
-const rep = ref<any>({ items: [] });
-const openLoading = ref<boolean>(false);
-const cloneLoading = ref<boolean>(false);
-
-async function openHome() {
-  console.log(rep.value);
-  await openDir(rep.value.basic_dir);
-}
+const rep = ref<any>({
+  basic_dir: "",
+  items: [{ uri: "1", name: "xiaoduo1" }],
+});
+const visible = ref<boolean>(false);
+const search = ref<string>("");
 
 async function get_rep() {
   try {
@@ -68,67 +103,16 @@ onMounted(async () => {
   await get_rep();
 });
 
-async function openCode(item: any) {
-  console.log(`${rep.value.basic_dir}/${item.host}/${item.host}/${item.name}`);
-  openLoading.value = true;
-  const command = new Command("code", ["."], {
-    cwd: `${rep.value.basic_dir}/${item.host}/${item.group}/${item.name}`,
-  });
+async function searchRep() {}
 
-  command.on("close", (data) => {
-    if (!data.code) {
-      ElMessage.success(`打开${item.name}成功`);
-    }
-    console.log(
-      `command finished with code ${data.code} and signal ${data.signal}`
-    );
-    openLoading.value = false;
-  });
-  command.on("error", (error) => console.error(`command error: "${error}"`));
-  command.stdout.on("data", (line) => console.log(`command stdout: "${line}"`));
-  command.stderr.on("data", (line) => console.log(`command stderr: "${line}"`));
-  const child = await command.spawn();
-  console.log("pid:", child.pid);
-}
-
-async function createRepFn(item: any) {
-  try {
-    const path: any = await createRep(item);
-    //${path} && git clone ${item.uri}
-    cloneLoading.value = true;
-    const command = new Command("git", ["clone", item.uri], { cwd: path });
-    command.on("close", (data) => {
-      if (!data.code) {
-        ElMessage.success(`下载${item.name}成功`);
-      }
-      console.log(
-        `command finished with code ${data.code} and signal ${data.signal}`
-      );
-
-      cloneLoading.value = false;
-    });
-    command.on("error", (error) => console.error(`command error: "${error}"`));
-    command.stdout.on("data", (line) =>
-      console.log(`command stdout: "${line}"`)
-    );
-    command.stderr.on("data", (line) =>
-      console.log(`command stderr: "${line}"`)
-    );
-    const child = await command.spawn();
-    console.log("pid:", child.pid);
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-async function searchPerson() {
+async function onCreateRep() {
   var repRegex =
     /^(https|git)(@|:\/\/)([a-z0-9\.-]+)(:|\/)([a-z0-9-]+)\/([a-z0-9-]+)\.git$/;
 
   let result: RegExpMatchArray | null = repository.value.match(repRegex);
 
   if (!result) {
-    ElMessage.error("输入链接不是一个仓库");
+    ElMessage.error(proxy.$t("common.fail"));
     return;
   }
   let result2 = {
@@ -146,14 +130,18 @@ async function searchPerson() {
       },
     });
     await get_rep();
+    ElMessage.success(proxy.$t("common.success"));
   } catch (error) {
-    ElMessage.error("添加链接失败");
+    ElMessage.error(proxy.$t("common.fail"));
   }
-
-  console.log(result);
-  console.log(repository);
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+.home-header {
+  display: flex;
+  &-add {
+    margin-left: 20px;
+  }
+}
 </style>
