@@ -1,4 +1,8 @@
 export default {
+  lang: {
+    en: '英语',
+    zh: '中文',
+  },
   setting: {
     themeMode: '暗夜模式',
     language: '语言设置',

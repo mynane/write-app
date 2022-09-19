@@ -1,4 +1,8 @@
 export default {
+  lang: {
+    en: 'English',
+    zh: 'Chinese',
+  },
   setting: {
     themeMode: 'Theme Mode',
     language: 'Language',

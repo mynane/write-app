@@ -27,36 +27,6 @@
         :basic_dir="rep.basic_dir"
       ></rep-card>
     </div>
-
-    <!-- <div>
-      <el-row :gutter="12">
-        <el-col :span="8" v-for="item in rep.items" :key="item.uri">
-          <el-card shadow="hover">
-            <template #header>
-              <div class="card-header">
-                <span>{{ item.name }}</span>
-                <el-button class="button" icon="ArrowRight" @click="openHome"
-                  >打开目录页</el-button
-                >
-                <el-button
-                  :loading="cloneLoading"
-                  class="button"
-                  @click="createRepFn(item)"
-                  >clone</el-button
-                >
-                <el-button
-                  :loading="openLoading"
-                  class="button"
-                  @click="openCode(item)"
-                  >code</el-button
-                >
-              </div>
-            </template>
-            <div>{{ item.name }}</div>
-          </el-card>
-        </el-col>
-      </el-row>
-    </div> -->
   </div>
   <el-dialog v-model="visible" :title="$t('common.add')" width="80%">
     <el-input v-model="repository" :placeholder="$t('common.keyword')" />
@@ -131,6 +101,7 @@ async function onCreateRep() {
     });
     await get_rep();
     ElMessage.success(proxy.$t("common.success"));
+    visible.value = false;
   } catch (error) {
     ElMessage.error(proxy.$t("common.fail"));
   }
