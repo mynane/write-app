@@ -23,3 +23,19 @@ export const setBasicDir = async (basicDir: string) => {
 export const createRep = async (item: string) => {
   return await invoke('create_rep', { item })
 }
+
+/**
+ * 获取基础路径
+ * @returns
+ */
+export const patchRep = async (uri: string, item: any) => {
+  return await invoke('patch_rep', { uri, item })
+}
+
+/**
+ * 删除rep
+ * @returns
+ */
+export const removeRep = async (uri: string) => {
+  return await invoke('remove_rep', { uri })
+}

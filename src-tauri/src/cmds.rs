@@ -124,6 +124,24 @@ pub fn append_rep(item: RepItem, rep_state: State<'_, RepositoriesState>) -> Res
 }
 
 #[tauri::command]
+pub fn patch_rep(
+    uri: String,
+    item: RepItem,
+    rep_state: State<'_, RepositoriesState>,
+) -> Result<(), String> {
+    let mut rep = rep_state.0.lock().unwrap();
+
+    wrap_err!(rep.patch_item(uri, item))
+}
+
+#[tauri::command]
+pub fn remove_rep(uri: String, rep_state: State<'_, RepositoriesState>) -> Result<(), String> {
+    let mut rep = rep_state.0.lock().unwrap();
+
+    wrap_err!(rep.remove_item(uri))
+}
+
+#[tauri::command]
 pub fn create_rep(
     item: RepItem,
     rep_state: State<'_, RepositoriesState>,
@@ -168,4 +186,11 @@ pub fn set_basic_dir(
 pub fn open_dir(dir: String) -> Result<(), String> {
     let dir = Path::new(&dir);
     wrap_err!(open::that(dir))
+}
+
+/// open logs dir
+#[tauri::command]
+pub fn remove_dir(dir: String) -> Result<(), String> {
+    let dir = Path::new(&dir);
+    wrap_err!(fs::remove_dir_all(dir))
 }

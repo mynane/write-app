@@ -5,7 +5,7 @@
       <el-button
         @click="onClone"
         :loading="loading.clone"
-        :disabled="item.isCloned"
+        :disabled="item.is_cloned"
         >{{ $t("common.clone") }}</el-button
       >
       <el-button @click="onOpenDir" :loading="loading.open">{{
@@ -14,7 +14,7 @@
       <el-button @click="onOpenCode" :loading="loading.code">{{
         $t("common.code")
       }}</el-button>
-      <el-button @click="onDelete" :loading="loading.delete">{{
+      <el-button @click="onRemoveDir" :loading="loading.delete">{{
         $t("common.delete")
       }}</el-button>
     </div>
@@ -23,13 +23,21 @@
 
 <script setup lang="ts">
 // 导入withDefaults父默认值
+import { fs } from "@tauri-apps/api";
 import { Command } from "@tauri-apps/api/shell";
-import { ElMessage } from "element-plus";
-import { getCurrentInstance, reactive, ref, withDefaults } from "vue";
-import { openDir } from "~/serviece/client/common";
-import { createRep } from "~/serviece/client/rep";
+import { Action, ElMessage, ElMessageBox } from "element-plus";
+import {
+  getCurrentInstance,
+  reactive,
+  ref,
+  withDefaults,
+  defineEmits,
+} from "vue";
+import { openDir, removeDir } from "~/serviece/client/common";
+import { createRep, patchRep, removeRep } from "~/serviece/client/rep";
 
 let { proxy }: any = getCurrentInstance();
+const emit = defineEmits(["reload"]);
 
 const loading = reactive({
   clone: false,
@@ -52,40 +60,70 @@ const props = withDefaults(defineProps<PropsType>(), {
 
 async function onOpenDir() {
   try {
+    loading.open = true;
     const { basic_dir } = props;
     const { host, group, name } = props.item;
     await openDir(`${basic_dir}/${host}/${group}/${name}`);
     ElMessage.success(proxy.$t("common.success"));
   } catch (error) {
     ElMessage.error(proxy.$t("common.fail"));
+  } finally {
+    loading.open = false;
+  }
+}
+
+async function onRemoveDir() {
+  ElMessageBox.alert(
+    proxy.$t("common.continueToDelete"),
+    proxy.$t("common.important"),
+    {
+      showCancelButton: true,
+      cancelButtonText: proxy.$t("common.cancel"),
+      confirmButtonText: proxy.$t("common.confirm"),
+      callback: async (action: Action) => {
+        if (action === "confirm") {
+          await remvePath();
+        }
+      },
+    }
+  );
+}
+
+async function remvePath() {
+  try {
+    loading.delete = true;
+    const { uri } = props.item;
+    await removeRep(uri);
+    ElMessage.success(proxy.$t("common.success"));
+  } catch (error) {
+    ElMessage.error(proxy.$t("common.fail"));
+  } finally {
+    emit("reload");
+    loading.delete = false;
   }
 }
 
 async function onClone() {
   const { item } = props;
+  const { basic_dir } = props;
+  const { host, group, name } = item;
   try {
     const path: any = await createRep(item);
-    //${path} && git clone ${item.uri}
     loading.clone = true;
     const command = new Command("git", ["clone", item.uri], { cwd: path });
-    command.on("close", (data) => {
+    command.on("close", async (data) => {
       if (!data.code) {
         ElMessage.success(proxy.$t("common.success"));
+        await patchRep(item.uri, { is_cloned: true });
+        emit("reload");
       } else {
         ElMessage.error(proxy.$t("common.fail"));
       }
 
       loading.clone = false;
     });
-    // command.on("error", (error) => console.error(`command error: "${error}"`));
-    // command.stdout.on("data", (line) =>
-    //   console.log(`command stdout: "${line}"`)
-    // );
-    // command.stderr.on("data", (line) =>
-    //   console.log(`command stderr: "${line}"`)
-    // );
+
     const child = await command.spawn();
-    // console.log("pid:", child.pid);
   } catch (error) {
     console.log(error);
   }
@@ -105,24 +143,13 @@ async function onOpenCode() {
       } else {
         ElMessage.error(proxy.$t("common.fail"));
       }
-      console.log(
-        `command finished with code ${data.code} and signal ${data.signal}`
-      );
       loading.code = false;
     });
-    //   command.on("error", (error) => console.error(`command error: "${error}"`));
-    //   command.stdout.on("data", (line) => console.log(`command stdout: "${line}"`));
-    //   command.stderr.on("data", (line) => console.log(`command stderr: "${line}"`));
     const child = await command.spawn();
-    //   console.log("pid:", child.pid);
   } catch (error) {
   } finally {
     loading.code = false;
   }
-}
-
-async function onDelete() {
-  ElMessage.warning("not impl");
 }
 console.log(props.item);
 </script>

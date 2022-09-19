@@ -11,7 +11,7 @@ static APP_DIR: &str = "write-app";
 static APP_DIR: &str = "write-app-dev";
 
 static CONFIG_YAML: &str = "config.yaml";
-static REPOSITORY_YAML: &str = "repository.yaml";
+static REPOSITORY_YAML: &str = "repositories.yaml";
 static VERGE_CONFIG: &str = "app.yaml";
 static PROFILE_YAML: &str = "profiles.yaml";
 static PROFILE_TEMP: &str = "write-app-runtime.yaml";

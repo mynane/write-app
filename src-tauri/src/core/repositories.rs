@@ -1,3 +1,5 @@
+use std::{fs, path::Path};
+
 use crate::utils::{config, dirs};
 use anyhow::{bail, Result};
 use serde::{Deserialize, Serialize};
@@ -19,6 +21,14 @@ pub struct RepItem {
     pub desc: Option<String>,
     pub tags: Option<Vec<String>>,
     pub is_cloned: Option<bool>,
+}
+
+macro_rules! patch {
+    ($lv: expr, $rv: expr, $key: tt) => {
+        if ($rv.$key).is_some() {
+            $lv.$key = $rv.$key;
+        }
+    };
 }
 
 #[derive(Debug, Default, Clone, Deserialize, Serialize)]
@@ -105,6 +115,60 @@ impl Repositories {
         }
 
         Ok(None)
+    }
+
+    /// path item
+    pub fn patch_item(&mut self, uri: String, mut item: RepItem) -> Result<()> {
+        /// update the item's value
+        let mut items = self.0.items.take().unwrap_or(vec![]);
+
+        for mut each in items.iter_mut() {
+            if each.uri == Some(uri.clone()) {
+                patch!(each, item, protocol);
+                patch!(each, item, name);
+                patch!(each, item, desc);
+                patch!(each, item, uri);
+                patch!(each, item, group);
+                patch!(each, item, is_cloned);
+                patch!(each, item, tags);
+
+                self.0.items = Some(items);
+                return self.save_file();
+            }
+        }
+
+        self.0.items = Some(items);
+        bail!("failed to found uri, {}", uri)
+    }
+
+    /// remove item
+    pub fn remove_item(&mut self, uri: String) -> Result<()> {
+        let bp = self.0.basic_dir.as_ref().unwrap().clone();
+        let mut items = self.0.items.take().unwrap_or(vec![]);
+        let mut index = None;
+
+        // get the index
+        for i in 0..items.len() {
+            if items[i].uri == Some(uri.clone()) {
+                index = Some(i);
+                break;
+            }
+        }
+
+        if let Some(index) = index {
+            let current = items.remove(index);
+            let path = Path::new(&bp)
+                .join(current.host.unwrap().clone())
+                .join(current.group.unwrap().clone())
+                .join(current.name.unwrap().clone());
+            if path.exists() {
+                fs::remove_dir_all(path).unwrap();
+            }
+        }
+
+        self.0.items = Some(items);
+        self.save_file()?;
+        Ok(())
     }
 }
 

@@ -1,7 +1,11 @@
 export default {
   lang: {
-    en: '英语',
+    en: '英文',
     zh: '中文',
+  },
+  menu: {
+    setting: '设置',
+    home: '首页',
   },
   setting: {
     themeMode: '暗夜模式',
@@ -24,6 +28,9 @@ export default {
     open: '打开目录',
     code: 'vscode打开',
     delete: '删除',
+    important: '重要',
+    warning: '警告',
+    continueToDelete: '是否继续删除?',
   },
   home: {
     inputRepUrl: '请输入仓库地址',

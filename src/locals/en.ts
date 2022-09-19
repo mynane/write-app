@@ -3,6 +3,10 @@ export default {
     en: 'English',
     zh: 'Chinese',
   },
+  menu: {
+    setting: 'Settings',
+    home: 'Home',
+  },
   setting: {
     themeMode: 'Theme Mode',
     language: 'Language',
@@ -24,6 +28,9 @@ export default {
     open: 'Open',
     code: 'VCcode Open',
     delete: 'Delete',
+    important: 'Important',
+    warning: 'Warning',
+    continueToDelete: 'Continue to delete?',
   },
   home: {
     inputRepUrl: 'Please enter the repository address',

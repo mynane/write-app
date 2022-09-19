@@ -5,6 +5,13 @@ import { invoke } from '@tauri-apps/api'
  * @returns
  */
 export const openDir = async (dir: string) => {
-  console.log('🚀 ~ file: common.ts ~ line 8 ~ openDir ~ dir', dir)
   return await invoke('open_dir', { dir })
+}
+
+/**
+ * 删除
+ * @returns
+ */
+export const removeDir = async (dir: string) => {
+  return await invoke('remove_dir', { dir })
 }

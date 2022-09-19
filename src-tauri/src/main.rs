@@ -15,8 +15,8 @@ use events::resolve_events;
 
 use crate::cmds::{
     append_rep, change_lang, change_theme, create_rep, get_all_tasks, get_basic_dir, get_configs,
-    get_repositories, greet, kill_sidecars, open_app_dir, open_dir, open_logs_dir, set_basic_dir,
-    spctl_master_disable,
+    get_repositories, greet, kill_sidecars, open_app_dir, open_dir, open_logs_dir, patch_rep,
+    remove_dir, remove_rep, set_basic_dir, spctl_master_disable,
 };
 use crate::utils::resolve;
 
@@ -46,8 +46,11 @@ async fn main() {
             get_basic_dir,
             set_basic_dir,
             create_rep,
+            patch_rep,
+            remove_rep,
             // common
-            open_dir
+            open_dir,
+            remove_dir
         ]);
 
     builder

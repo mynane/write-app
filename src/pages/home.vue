@@ -4,11 +4,11 @@
     <div class="home-header">
       <el-input
         v-model.trim="search"
-        :placeholder="$t('home.inputRepUrl')"
+        :placeholder="$t('common.keyword')"
         v-on:keyup.enter.native="searchRep"
         :suffix-icon="Search"
       />
-      <div class="home-header-add">
+      <div class="home-header-add" v-if="!!rep.basic_dir">
         <el-tooltip :content="$t('common.add')"
           ><el-button
             type="primary"
@@ -25,11 +25,12 @@
         :key="item.uri"
         :item="item"
         :basic_dir="rep.basic_dir"
+        @reload="get_rep"
       ></rep-card>
     </div>
   </div>
   <el-dialog v-model="visible" :title="$t('common.add')" width="80%">
-    <el-input v-model="repository" :placeholder="$t('common.keyword')" />
+    <el-input v-model="repository" :placeholder="$t('home.inputRepUrl')" />
     <template #footer>
       <el-space>
         <el-button @click="visible = false">{{
@@ -58,7 +59,7 @@ let { proxy }: any = getCurrentInstance();
 const repository = ref<string>("");
 const rep = ref<any>({
   basic_dir: "",
-  items: [{ uri: "1", name: "xiaoduo1" }],
+  items: [],
 });
 const visible = ref<boolean>(false);
 const search = ref<string>("");
@@ -77,9 +78,10 @@ async function searchRep() {}
 
 async function onCreateRep() {
   var repRegex =
-    /^(https|git)(@|:\/\/)([a-z0-9\.-]+)(:|\/)([a-z0-9-]+)\/([a-z0-9-]+)\.git$/;
+    /^(https|git)(@|:\/\/)([A-Za-z0-9\.-]+)(:|\/)([A-Za-z0-9-]+)\/([A-Za-z0-9-]+)\.git$/;
 
   let result: RegExpMatchArray | null = repository.value.match(repRegex);
+  console.log("🚀 ~ file: home.vue ~ line 84 ~ onCreateRep ~ result", result);
 
   if (!result) {
     ElMessage.error(proxy.$t("common.fail"));
@@ -110,7 +112,10 @@ async function onCreateRep() {
 
 <style scoped lang="scss">
 .home-header {
+  position: sticky;
+  top: 0;
   display: flex;
+  background-color: var(--ep-card-bg-color);
   &-add {
     margin-left: 20px;
   }
