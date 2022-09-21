@@ -49,3 +49,11 @@ export const openLogsDir = async () => {
 export const spctlMasterDisable = async () => {
   return await invoke('spctl_master_disable')
 }
+
+/**
+ * 批量修改config
+ * @returns
+ */
+export const patch_config = async (item: any) => {
+  return await invoke('patch_config', { item })
+}

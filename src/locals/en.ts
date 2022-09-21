@@ -15,6 +15,7 @@ export default {
     openLogsDir: 'Open Logs Dir',
     spctlMasterDisable: 'Mac Trust All Sources',
     getPermission: 'Get Permission',
+    jira: 'Jira',
   },
   common: {
     fail: 'Fail',

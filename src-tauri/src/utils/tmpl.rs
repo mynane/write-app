@@ -6,6 +6,7 @@ pub const CONFIG_YAML: &[u8] = br#"# Default Config
 spctl_master_disable: false
 theme: light
 lang: ~
+jira: ~
 "#;
 
 /// template for `profiles.yaml`

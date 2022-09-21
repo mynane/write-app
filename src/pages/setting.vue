@@ -25,6 +25,11 @@
     <el-form-item :label="$t('setting.openLogsDir')">
       <el-button :icon="Right" circle @click="openLogsDir" />
     </el-form-item>
+    <!-- <el-form-item :label="$t('setting.jira')">
+      <el-button @click="jira.visible = true" type="primary">{{
+        $t("common.add")
+      }}</el-button>
+    </el-form-item> -->
     <el-form-item
       :label="$t('setting.spctlMasterDisable')"
       v-if="settings.platform === 'darwin'"
@@ -34,10 +39,41 @@
       }}</el-button>
     </el-form-item>
   </el-form>
+  <el-dialog v-model="jira.visible" :title="$t('setting.jira')">
+    <div>
+      <el-form :model="jira" label-width="80px">
+        <el-form-item label="url">
+          <el-input v-model="jira.url" />
+        </el-form-item>
+        <el-form-item label="username">
+          <el-input v-model="jira.username" />
+        </el-form-item>
+        <el-form-item label="password">
+          <el-input type="password" v-model="jira.password" />
+        </el-form-item>
+      </el-form>
+    </div>
+    <template #footer>
+      <el-space>
+        <el-button @click="jira.visible = false">{{
+          $t("common.cancel")
+        }}</el-button>
+        <el-button type="primary" @click="onAddJira">{{
+          $t("common.confirm")
+        }}</el-button>
+      </el-space>
+    </template>
+  </el-dialog>
 </template>
 
 <script setup lang="ts">
-import { onBeforeMount, onMounted, reactive, ref } from "vue";
+import {
+  getCurrentInstance,
+  onBeforeMount,
+  onMounted,
+  reactive,
+  ref,
+} from "vue";
 import { changeClientLang } from "~/locals";
 import useClientDark from "~/hooks/useClientDark.vue";
 import { getVersion } from "@tauri-apps/api/app";
@@ -57,12 +93,20 @@ import {
   spctlMasterDisable,
 } from "~/serviece/client/configs";
 import { platform } from "@tauri-apps/api/os";
+import { ElMessage } from "element-plus";
+let { proxy }: any = getCurrentInstance();
 
 const { isDark, toggleTheme } = useClientDark();
 const settings = reactive<any>({
   version: "0.0.0",
   configs: { spctlMasterDisable: true },
   platform: "",
+});
+const jira = reactive<any>({
+  visible: false,
+  url: "",
+  username: "",
+  password: "",
 });
 
 onMounted(async () => {
@@ -74,6 +118,22 @@ onMounted(async () => {
     console.log(settings);
   } catch (error) {}
 });
+
+async function onAddJira() {
+  if (!jira.url || !jira.username || !jira.password) {
+    ElMessage.error(proxy.$t("common.fail"));
+  }
+
+  // var jira1 = new JiraApi({
+  //   protocol: "https",
+  //   host: "jira.somehost.com",
+  //   username: "username",
+  //   password: "password",
+  //   apiVersion: "2",
+  //   strictSSL: true,
+  // });
+  // console.log(jira1);
+}
 </script>
 
 <style lang="scss" scoped>

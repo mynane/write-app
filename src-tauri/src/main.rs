@@ -15,8 +15,8 @@ use events::resolve_events;
 
 use crate::cmds::{
     append_rep, change_lang, change_theme, create_rep, get_all_tasks, get_basic_dir, get_configs,
-    get_repositories, greet, kill_sidecars, open_app_dir, open_dir, open_logs_dir, patch_rep,
-    remove_dir, remove_rep, set_basic_dir, spctl_master_disable,
+    get_repositories, greet, kill_sidecars, open_app_dir, open_dir, open_logs_dir, patch_config,
+    patch_rep, remove_dir, remove_rep, set_basic_dir, spctl_master_disable,
 };
 use crate::utils::resolve;
 
@@ -33,13 +33,15 @@ async fn main() {
         .invoke_handler(tauri::generate_handler![
             greet,
             get_all_tasks,
+            kill_sidecars,
+            open_app_dir,
+            open_logs_dir,
+            // config
             spctl_master_disable,
             change_theme,
             get_configs,
             change_lang,
-            kill_sidecars,
-            open_app_dir,
-            open_logs_dir,
+            patch_config,
             // Rep
             get_repositories,
             append_rep,

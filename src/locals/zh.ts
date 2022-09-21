@@ -15,6 +15,7 @@ export default {
     openLogsDir: '日志目录',
     spctlMasterDisable: 'Mac信任所有来源',
     getPermission: '获取权限',
+    jira: 'Jira',
   },
   common: {
     fail: '失败',
