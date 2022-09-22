@@ -123,7 +123,17 @@ async function onClone() {
       loading.clone = false;
     });
 
+    command.on("error", (error) => console.error(`command error: "${error}"`));
+    command.stdout.on("data", (line) =>
+      console.log(`command stdout: "${line}"`)
+    );
+    command.stderr.on("data", (line) =>
+      console.log(`command stderr: "${line}"`)
+    );
+
     const child = await command.spawn();
+
+    console.log("pid:", child.pid);
   } catch (error) {
     console.log(error);
   }
@@ -145,7 +155,16 @@ async function onOpenCode() {
       }
       loading.code = false;
     });
+    command.on("error", (error) => console.error(`command error: "${error}"`));
+    command.stdout.on("data", (line) =>
+      console.log(`command stdout: "${line}"`)
+    );
+    command.stderr.on("data", (line) =>
+      console.log(`command stderr: "${line}"`)
+    );
     const child = await command.spawn();
+
+    console.log("pid:", child.pid);
   } catch (error) {
   } finally {
     loading.code = false;
