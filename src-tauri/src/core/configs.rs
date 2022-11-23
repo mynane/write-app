@@ -31,6 +31,7 @@ pub struct ConfigsInner {
     pub theme: Option<String>,
     pub lang: Option<String>,
     pub jira: Option<Jira>,
+    pub is_github_use_proxy: Option<bool>,
 }
 
 impl Default for ConfigsInner {
@@ -40,6 +41,7 @@ impl Default for ConfigsInner {
             theme: Some("".to_string()),
             lang: Some("zh".to_string()),
             jira: Some(Jira::default()),
+            is_github_use_proxy: Some(false),
         }
     }
 }
@@ -74,6 +76,7 @@ impl Configs {
         patch!(clo, item, theme);
         patch!(clo, item, lang);
         patch!(clo, item, jira);
+        patch!(clo, item, is_github_use_proxy);
 
         self.0 = clo;
         return self.save_config();

@@ -1,6 +1,6 @@
 <template>
   <div class="rep-card ep-card">
-    <div class="rep-content">{{ props.item.name }}</div>
+    <div class="rep-content">{{ props.item.group }}/{{ props.item.name }}</div>
     <div class="rep-footer">
       <el-button
         @click="onClone"
@@ -56,6 +56,7 @@ interface PropsType {
 const props = withDefaults(defineProps<PropsType>(), {
   item: {},
   basic_dir: "",
+  useProxy: false,
 });
 
 async function onOpenDir() {
@@ -104,13 +105,25 @@ async function remvePath() {
 }
 
 async function onClone() {
-  const { item } = props;
+  const { item, useProxy } = props;
   const { basic_dir } = props;
   const { host, group, name } = item;
   try {
     const path: any = await createRep(item);
     loading.clone = true;
-    const command = new Command("git", ["clone", item.uri], { cwd: path });
+    const command = new Command(
+      "git",
+      [
+        "clone",
+        `${
+          item.uri.startsWith("https://github.com")
+            ? "https://github.91chi.fun//"
+            : ""
+        }${item.uri}`,
+      ],
+      { cwd: path }
+    );
+    console.log(command);
     command.on("close", async (data) => {
       if (!data.code) {
         ElMessage.success(proxy.$t("common.success"));

@@ -16,6 +16,7 @@ export default {
     spctlMasterDisable: 'Mac Trust All Sources',
     getPermission: 'Get Permission',
     jira: 'Jira',
+    githubProxy: 'github proxy',
   },
   common: {
     fail: 'Fail',

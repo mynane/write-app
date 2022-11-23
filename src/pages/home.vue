@@ -5,7 +5,6 @@
       <el-input
         v-model.trim="search"
         :placeholder="$t('common.keyword')"
-        v-on:keyup.enter.native="searchRep"
         :suffix-icon="Search"
       />
       <div class="home-header-add" v-if="!!rep.basic_dir">
@@ -25,6 +24,7 @@
         :key="item.uri"
         :item="item"
         :basic_dir="rep.basic_dir"
+        :useProxy="configs.isGithubUseProxy"
         @reload="get_rep"
       ></rep-card>
     </div>
@@ -53,6 +53,8 @@ import { ElMessage } from "element-plus";
 import { getCurrentInstance, onMounted, reactive, ref } from "vue";
 import { Search, Edit } from "@element-plus/icons-vue";
 import RepCard from "~/components/repCard/index.vue";
+import { getConfigs } from "~/serviece/client/configs";
+import { watch } from "fs";
 
 let { proxy }: any = getCurrentInstance();
 
@@ -61,6 +63,7 @@ const rep = ref<any>({
   basic_dir: "",
   items: [],
 });
+const configs = ref<any>();
 const visible = ref<boolean>(false);
 const search = ref<string>("");
 
@@ -71,6 +74,7 @@ async function get_rep() {
 }
 
 onMounted(async () => {
+  configs.value = await getConfigs();
   await get_rep();
 });
 
@@ -81,7 +85,6 @@ async function onCreateRep() {
     /^(https|git)(@|:\/\/)([A-Za-z0-9\.-]+)(:|\/)([A-Za-z0-9-]+)\/([A-Za-z0-9-]+)\.git$/;
 
   let result: RegExpMatchArray | null = repository.value.match(repRegex);
-  console.log("🚀 ~ file: home.vue ~ line 84 ~ onCreateRep ~ result", result);
 
   if (!result) {
     ElMessage.error(proxy.$t("common.fail"));

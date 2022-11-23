@@ -7,6 +7,12 @@
     <el-form-item :label="$t('setting.themeMode')">
       <el-switch :model-value="isDark" @change="toggleTheme()" />
     </el-form-item>
+    <!-- <el-form-item :label="$t('setting.githubProxy')">
+      <el-switch
+        :model-value="settings.configs.isGithubUseProxy"
+        @change="toggleGithubProxy()"
+      />
+    </el-form-item> -->
     <el-form-item :label="$t('setting.language')">
       <el-select :model-value="$i18n.locale" @change="changeClientLang">
         <el-option
@@ -91,6 +97,7 @@ import {
   openAppDir,
   openLogsDir,
   spctlMasterDisable,
+  patch_config,
 } from "~/serviece/client/configs";
 import { platform } from "@tauri-apps/api/os";
 import { ElMessage } from "element-plus";
@@ -99,7 +106,7 @@ let { proxy }: any = getCurrentInstance();
 const { isDark, toggleTheme } = useClientDark();
 const settings = reactive<any>({
   version: "0.0.0",
-  configs: { spctlMasterDisable: true },
+  configs: { spctlMasterDisable: true, isGithubUseProxy: false },
   platform: "",
 });
 const jira = reactive<any>({
@@ -108,6 +115,11 @@ const jira = reactive<any>({
   username: "",
   password: "",
 });
+
+async function toggleGithubProxy() {
+  patch_config({ isGithubUseProxy: !settings.configs.isGithubUseProxy });
+  settings.configs = await getConfigs();
+}
 
 onMounted(async () => {
   try {

@@ -16,6 +16,7 @@ export default {
     spctlMasterDisable: 'Mac信任所有来源',
     getPermission: '获取权限',
     jira: 'Jira',
+    githubProxy: 'github 加速',
   },
   common: {
     fail: '失败',
