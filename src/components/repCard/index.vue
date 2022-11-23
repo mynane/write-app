@@ -10,17 +10,27 @@
         @click="onClone"
         :loading="loading.clone"
         :disabled="item.is_cloned"
+        v-if="!item.is_cloned"
         >{{ $t("common.clone") }}</el-button
       >
-      <el-button @click="onOpenDir" :loading="loading.open">{{
-        $t("common.open")
-      }}</el-button>
-      <el-button @click="onOpenCode" :loading="loading.code">{{
-        $t("common.code")
-      }}</el-button>
-      <el-button @click="onRemoveDir" :loading="loading.delete">{{
-        $t("common.delete")
-      }}</el-button>
+      <el-button
+        @click="onOpenDir"
+        :loading="loading.open"
+        v-if="item.is_cloned"
+        >{{ $t("common.open") }}</el-button
+      >
+      <el-button
+        @click="onOpenCode"
+        :loading="loading.code"
+        v-if="item.is_cloned"
+        >{{ $t("common.code") }}</el-button
+      >
+      <el-button
+        @click="onRemoveDir"
+        :loading="loading.delete"
+        v-if="item.is_cloned"
+        >{{ $t("common.delete") }}</el-button
+      >
     </div>
   </div>
 </template>
@@ -36,10 +46,13 @@ import {
   ref,
   withDefaults,
   defineEmits,
+  onMounted,
+  onUnmounted,
 } from "vue";
 import { openDir, removeDir } from "~/serviece/client/common";
 import { createRep, patchRep, removeRep } from "~/serviece/client/rep";
 import { open } from "@tauri-apps/api/shell";
+import { cloneManager } from "~/utils/cloneMananger";
 
 let { proxy }: any = getCurrentInstance();
 const emit = defineEmits(["reload"]);
@@ -115,49 +128,40 @@ async function remvePath() {
   }
 }
 
+onMounted(async () => {
+  cloneManager.addEventListener(
+    props.item.uri,
+    async (isloading: boolean, hasError: boolean) => {
+      console.log(isloading, hasError);
+      loading.clone = isloading;
+      if (typeof hasError === "boolean") {
+        if (hasError) {
+          ElMessage.error(proxy.$t("common.fail"));
+          try {
+            await removeDir(
+              `${props.basic_dir}/${props.item.host}/${props.item.group}/${props.item.name}`
+            );
+          } catch (error) {}
+        } else {
+          ElMessage.success(proxy.$t("common.success"));
+          console.log(123123);
+          await patchRep(props.item.uri, { is_cloned: true });
+          emit("reload");
+        }
+      }
+    }
+  );
+});
+
+onUnmounted(async () => {
+  cloneManager.removeEventListener(props.item.uri);
+});
+
 async function onClone() {
-  const { item, useProxy } = props;
-  const { basic_dir } = props;
-  const { host, group, name } = item;
+  const { item } = props;
   try {
     const path: any = await createRep(item);
-    loading.clone = true;
-    const command = new Command(
-      "git",
-      [
-        "clone",
-        `${
-          item.uri.startsWith("https://github.com")
-            ? "https://github.91chi.fun//"
-            : ""
-        }${item.uri}`,
-      ],
-      { cwd: path }
-    );
-    console.log(command);
-    command.on("close", async (data) => {
-      if (!data.code) {
-        ElMessage.success(proxy.$t("common.success"));
-        await patchRep(item.uri, { is_cloned: true });
-        emit("reload");
-      } else {
-        ElMessage.error(proxy.$t("common.fail"));
-      }
-
-      loading.clone = false;
-    });
-
-    command.on("error", (error) => console.error(`command error: "${error}"`));
-    command.stdout.on("data", (line) =>
-      console.log(`command stdout: "${line}"`)
-    );
-    command.stderr.on("data", (line) =>
-      console.log(`command stderr: "${line}"`)
-    );
-
-    const child = await command.spawn();
-
-    console.log("pid:", child.pid);
+    cloneManager.clone(item.uri, path);
   } catch (error) {
     console.log(error);
   }
@@ -199,10 +203,13 @@ console.log(props.item);
 
 <style scoped lang="scss">
 .rep-card {
-  margin: 20px 0;
+  margin: 10px 0;
 }
 .rep-content {
   padding: 10px;
+  min-height: 50px;
+  display: flex;
+  align-items: center;
 }
 .rep-footer {
   display: flex;
@@ -218,6 +225,7 @@ console.log(props.item);
   & > .ep-button {
     border: none;
     flex: 1;
+    padding: initial;
   }
 }
 </style>

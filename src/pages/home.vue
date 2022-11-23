@@ -123,4 +123,10 @@ async function onCreateRep() {
     margin-left: 20px;
   }
 }
+
+.home-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 0 20px;
+}
 </style>

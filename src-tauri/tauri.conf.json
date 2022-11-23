@@ -30,10 +30,8 @@
         ]
       },
       "fs": {
-        "scope": [
-          "$HOME",
-          "$HOME/*"
-        ]
+        "all": true,
+        "scope": ["$HOME", "$HOME/*"]
       }
     },
     "bundle": {
