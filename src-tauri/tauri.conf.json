@@ -13,8 +13,10 @@
   "tauri": {
     "allowlist": {
       "all": true,
+
       "shell": {
         "all": true,
+        "open": true,
         "scope": [
           {
             "name": "git",
@@ -29,10 +31,7 @@
         ]
       },
       "fs": {
-        "scope": [
-          "$HOME",
-          "$HOME/*"
-        ]
+        "scope": ["$HOME", "$HOME/*"]
       }
     },
     "bundle": {

@@ -1,6 +1,10 @@
 <template>
   <div class="rep-card ep-card">
-    <div class="rep-content">{{ props.item.group }}/{{ props.item.name }}</div>
+    <div class="rep-content">
+      <a href="javascript:void(0);" @click="openLink"
+        >{{ props.item.group }}/{{ props.item.name }}</a
+      >
+    </div>
     <div class="rep-footer">
       <el-button
         @click="onClone"
@@ -35,6 +39,7 @@ import {
 } from "vue";
 import { openDir, removeDir } from "~/serviece/client/common";
 import { createRep, patchRep, removeRep } from "~/serviece/client/rep";
+import { open } from "@tauri-apps/api/shell";
 
 let { proxy }: any = getCurrentInstance();
 const emit = defineEmits(["reload"]);
@@ -58,6 +63,12 @@ const props = withDefaults(defineProps<PropsType>(), {
   basic_dir: "",
   useProxy: false,
 });
+
+async function openLink() {
+  const { host, group, name, protocol } = props.item;
+
+  await open(`https://${host}/${group}/${name}`);
+}
 
 async function onOpenDir() {
   try {
