@@ -8,12 +8,11 @@
   },
   "package": {
     "productName": "write-app",
-    "version": "0.0.42"
+    "version": "0.0.43"
   },
   "tauri": {
     "allowlist": {
       "all": true,
-
       "shell": {
         "all": true,
         "open": true,
@@ -31,7 +30,10 @@
         ]
       },
       "fs": {
-        "scope": ["$HOME", "$HOME/*"]
+        "scope": [
+          "$HOME",
+          "$HOME/*"
+        ]
       }
     },
     "bundle": {
