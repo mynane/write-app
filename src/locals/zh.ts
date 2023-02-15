@@ -6,6 +6,7 @@ export default {
   menu: {
     setting: '设置',
     home: '首页',
+    regulex: '正则可视化',
   },
   setting: {
     themeMode: '暗夜模式',

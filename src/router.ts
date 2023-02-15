@@ -1,9 +1,11 @@
 import { createWebHashHistory, createRouter } from 'vue-router'
 import Home from './pages/home.vue'
+import Regulex from './pages/regulex.vue'
 import Setting from './pages/setting.vue'
 
 const routes = [
   { path: '/', component: Home },
+  { path: '/regulex', component: Regulex },
   { path: '/setting', component: Setting },
 ]
 

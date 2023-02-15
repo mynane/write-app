@@ -6,6 +6,7 @@ export default {
   menu: {
     setting: 'Settings',
     home: 'Home',
+    regulex: 'Regulex',
   },
   setting: {
     themeMode: 'Theme Mode',
@@ -28,7 +29,7 @@ export default {
     keyword: 'Please enter keyword',
     clone: 'Clone',
     open: 'Open',
-    code: 'VCcode Open',
+    code: 'VScode Open',
     delete: 'Delete',
     important: 'Important',
     warning: 'Warning',

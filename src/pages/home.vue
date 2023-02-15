@@ -82,7 +82,7 @@ async function searchRep() {}
 
 async function onCreateRep() {
   var repRegex =
-    /^(https|git)(@|:\/\/)([A-Za-z0-9\.-]+)(:|\/)([A-Za-z0-9-]+)\/([A-Za-z0-9-]+)\.git$/;
+    /^(https|git)(@|:\/\/)([A-Za-z0-9\.-]+)(:|\/)([A-Za-z0-9-]+)\/(.+)\.git$/;
 
   let result: RegExpMatchArray | null = repository.value.match(repRegex);
 
@@ -107,6 +107,7 @@ async function onCreateRep() {
     await get_rep();
     ElMessage.success(proxy.$t("common.success"));
     visible.value = false;
+    repository.value = "";
   } catch (error) {
     ElMessage.error(proxy.$t("common.fail"));
   }

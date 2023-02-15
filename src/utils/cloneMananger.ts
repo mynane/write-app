@@ -22,7 +22,8 @@ class CloneManager {
       'git',
       [
         'clone',
-        `${uri.startsWith('https://github.com') ? 'https://github.91chi.fun//' : ''}${uri}`,
+        uri,
+        // `${uri.startsWith('https://github.com') ? 'https://github.91chi.fun//' : ''}${uri}`,
       ],
       { cwd: path }
     )
