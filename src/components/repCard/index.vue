@@ -132,7 +132,6 @@ onMounted(async () => {
   cloneManager.addEventListener(
     props.item.uri,
     async (isloading: boolean, hasError: boolean) => {
-      console.log(isloading, hasError);
       loading.clone = isloading;
       if (typeof hasError === "boolean") {
         if (hasError) {
@@ -144,7 +143,6 @@ onMounted(async () => {
           } catch (error) {}
         } else {
           ElMessage.success(proxy.$t("common.success"));
-          console.log(123123);
           await patchRep(props.item.uri, { is_cloned: true });
           emit("reload");
         }
@@ -198,7 +196,6 @@ async function onOpenCode() {
     loading.code = false;
   }
 }
-console.log(props.item);
 </script>
 
 <style scoped lang="scss">

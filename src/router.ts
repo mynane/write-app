@@ -5,7 +5,7 @@ import Setting from './pages/setting.vue'
 
 const routes = [
   { path: '/', component: Home },
-  { path: '/regulex', component: Regulex },
+  // { path: '/regulex', component: Regulex },
   { path: '/setting', component: Setting },
 ]
 

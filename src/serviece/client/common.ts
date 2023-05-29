@@ -15,3 +15,9 @@ export const openDir = async (dir: string) => {
 export const removeDir = async (dir: string) => {
   return await invoke('remove_dir', { dir })
 }
+
+export const testPlugin = async () => {
+  return await invoke('plugin:app|do_something')
+}
+
+testPlugin()

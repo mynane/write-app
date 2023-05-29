@@ -10,7 +10,7 @@ rust-version = "1.57"
 
 [workspace]
 members = [
-  "plugins/tauri-plugin-updater",
+  "plugins/tauri-plugin-app",
 ]
 
 
@@ -47,7 +47,7 @@ whoami = "1.2.2"
 uuid = { version = "1.1.2", features = ["v4", "fast-rng", "macro-diagnostics"] }
 base64 = "0.13.0"
 url = "2.3.1"
-tauri-plugin-updater = { path = "plugins/tauri-plugin-updater" }
+tauri-plugin-app = { path = "plugins/tauri-plugin-app" }
 
 [dependencies.fix-path-env]
 git = "https://github.com/tauri-apps/fix-path-env-rs"

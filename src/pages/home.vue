@@ -20,7 +20,7 @@
 
     <div class="home-body">
       <rep-card
-        v-for="item in rep.items"
+        v-for="item in rep.showItems"
         :key="item.uri"
         :item="item"
         :basic_dir="rep.basic_dir"
@@ -54,7 +54,7 @@ import { getCurrentInstance, onMounted, reactive, ref } from "vue";
 import { Search, Edit } from "@element-plus/icons-vue";
 import RepCard from "~/components/repCard/index.vue";
 import { getConfigs } from "~/serviece/client/configs";
-import { watch } from "fs";
+import { watch } from "vue";
 
 let { proxy }: any = getCurrentInstance();
 
@@ -62,6 +62,7 @@ const repository = ref<string>("");
 const rep = ref<any>({
   basic_dir: "",
   items: [],
+  showItems: [],
 });
 const configs = ref<any>();
 const visible = ref<boolean>(false);
@@ -69,7 +70,12 @@ const search = ref<string>("");
 
 async function get_rep() {
   try {
-    rep.value = await invoke("get_repositories");
+    let temp: any = await invoke("get_repositories");
+    rep.value = {
+      basic_dir: temp.basic_dir,
+      items: temp.items,
+      showItems: temp.items,
+    };
   } catch (error) {}
 }
 
@@ -80,12 +86,22 @@ onMounted(async () => {
 
 async function searchRep() {}
 
+watch(
+  () => search.value,
+  (nval, oval) => {
+    const { items } = rep.value;
+    if (!nval.trim()) {
+      rep.value.showItems = items;
+      return;
+    }
+    rep.value.showItems = items.filter((item: any) => item.uri.includes(nval));
+  }
+);
+
 async function onCreateRep() {
-  var repRegex =
-    /^(https|git)(@|:\/\/)([A-Za-z0-9\.-]+)(:|\/)([A-Za-z0-9-]+)\/(.+)\.git$/;
+  var repRegex = /^(https|git)(@|:\/\/)([A-Za-z0-9\.-]+)(:|\/)(.+)\/(.+)\.git$/;
 
   let result: RegExpMatchArray | null = repository.value.match(repRegex);
-
   if (!result) {
     ElMessage.error(proxy.$t("common.fail"));
     return;

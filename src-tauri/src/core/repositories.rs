@@ -78,6 +78,7 @@ impl Repositories {
 
     /// append new item
     pub fn append_item(&mut self, mut item: RepItem) -> Result<()> {
+        println!("{:?}", item);
         if item.uri.is_none() {
             bail!("the uri should not be null");
         }
@@ -86,7 +87,7 @@ impl Repositories {
 
         let rep = self.get_rep_width_uri(uri).unwrap();
         if !rep.is_none() {
-            bail!("the uri should has exest");
+            bail!("the project already exists");
         }
 
         if self.0.items.is_none() {

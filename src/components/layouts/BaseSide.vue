@@ -9,10 +9,10 @@
       <el-icon><HomeFilled /></el-icon>
       <template #title>{{ $t("menu.home") }}</template>
     </el-menu-item>
-    <el-menu-item index="/regulex">
+    <!-- <el-menu-item index="/regulex">
       <el-icon><Finished /></el-icon>
       <template #title>{{ $t("menu.regulex") }}</template>
-    </el-menu-item>
+    </el-menu-item> -->
     <el-menu-item index="/setting">
       <el-icon><setting /></el-icon>
       <template #title>{{ $t("menu.setting") }}</template>
@@ -30,7 +30,6 @@ const active = ref<string>("/");
 const handleSelect = (key: string, keyPath: string[]) => {
   router.push(key);
   active.value = key;
-  console.log(key, keyPath);
 };
 </script>
 

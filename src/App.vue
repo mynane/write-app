@@ -34,8 +34,6 @@ onMounted(async () => {
         directory: true,
       });
 
-      console.log(selected);
-
       if (selected) {
         await setBasicDir(selected as string);
       }
