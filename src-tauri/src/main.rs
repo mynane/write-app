@@ -25,7 +25,6 @@ async fn main() {
     #[allow(unused_mut)]
     fix_path_env::fix();
     let mut builder = tauri::Builder::default()
-        .plugin(tauri_plugin_app::init())
         .manage(states::TasksState::default())
         .manage(states::ConfigsState::default())
         .manage(states::RepositoriesState::default())
