@@ -3331,13 +3331,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "tauri-plugin-app"
-version = "0.0.0"
-dependencies = [
- "tauri",
-]
-
-[[package]]
 name = "tauri-runtime"
 version = "0.12.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4525,7 +4518,6 @@ dependencies = [
  "serde_yaml 0.9.11",
  "tauri",
  "tauri-build",
- "tauri-plugin-app",
  "tempdir",
  "tokio",
  "tokio-test",
